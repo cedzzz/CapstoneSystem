@@ -1,0 +1,127 @@
+.popup{
+    visibility: hidden;
+}
+
+.open-popup{
+    visibility: visible;
+
+}
+
+
+    .title {
+    margin: 0;
+    font-weight: 400;
+    }
+    h3 {
+    margin: 12px 0;
+    color: #1b2152;
+    }
+    .main-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    }
+    form {
+    width: 100%;
+    padding: 20px;
+    }
+    fieldset {
+    border: none;
+    border-top: 1px solid #0a0b3b;
+    }
+    .account-details, .personal-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    }
+    .account-details >div, .personal-details >div >div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    }
+    .account-details >div, .personal-details >div, input, label {
+    width: 100%;
+    }
+    label {
+    padding: 0 5px;
+    text-align: right;
+    vertical-align: middle;
+    }
+    input {
+    padding: 5px;
+    vertical-align: middle;
+    }
+
+    select {
+    background: transparent;
+    }
+  
+    .submitbtn {
+    width: 100%;
+    padding: 10px 0;
+    margin: 10px auto;
+    border-radius: 5px; 
+    border: none;
+    background: #0a0b3b; 
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    }
+    .submitbtn:hover {
+    background: #82b534;
+    }
+    @media (min-width: 568px) {
+    .account-details >div, .personal-details >div {
+    width: 50%;
+    }
+    label {
+    width: 40%;
+    }
+    input {
+    width: 60%;
+    }
+    select, .children, .gender, .bdate-block {
+    width: calc(60% + 16px);
+    }
+}
+
+.history{
+    visibility: hidden;
+}
+
+.history-open{
+    visibility: visible;
+}
+
+.btnannouncement{
+                    width: 20%;
+                    padding: 10px 0;
+                    margin: 10px auto;
+                    border-radius: 5px; 
+                    border: none;
+                    background: #0a0b3b; 
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #fff;
+}
+
+.btnannouncement:hover{
+    background: #2c3680;
+}
+
+.btndelannouncement{
+    width: 20%;
+    padding: 10px 0;
+    margin: 10px auto;
+    border-radius: 5px; 
+    border: none;
+    background: #581212; 
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.btndelannouncement:hover{
+background: #a73a3a;
+}

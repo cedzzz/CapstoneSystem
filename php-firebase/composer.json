@@ -1,0 +1,6 @@
+{
+    "require": {
+        "ext-sodium": "*",
+        "kreait/firebase-php": "^6.8"
+    }
+}
