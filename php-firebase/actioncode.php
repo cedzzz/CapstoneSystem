@@ -183,7 +183,7 @@ if(isset($_POST['addres'])){
         'address'=>$address,
         'city'=>$city,
         'province'=>$province,
-        'zipcode'=>$postcode,
+        'zipcode'=>$zipcode,
         'uid' =>$uid,
     ];
 
