@@ -73,7 +73,7 @@ function onChange() {
     	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-mobile"></i> </span>
 		</div>
-		<input name="prephone" class="form-control" value="+63" placeholder="" type="text" style="max-width: 120px;" readonly disabled>
+		<input name="prephone" class="form-control" value="+63" placeholder="" type="text" style="max-width: 120px;" readonly>
     	<input name="phone" class="form-control" placeholder="Phone Number" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" pattern="[0-9]{10}" required="">
     </div>
 

@@ -41,8 +41,8 @@ include('includes/dashboard.php');
                                       <h3>User Details</h3>
                                     </legend>
                                     <input type="hidden" name="change_pwd_uid" value = "<?=$uid;?>">
-                                    <div class="formn-group mb-3">
-                                      <label style="text-align: left;">New Password </label>
+                                    <div  class="formn-group mb-3">
+                                      <label for="">New Password </label>
                                       <input type="password" name="new_password" id="password" class="form-control" required="" onChange="onChange()">
                                       <small id="passwordHelpBlock" class="form-text text-muted">
                                         Your password must contain at least 8 characters, including at least one small letter, one capital letter, one special character (e.g ~`!@#$%^&*()"-_+{}[];:<>,.?/|\ ), and must not contain spaces or emoji.
@@ -50,7 +50,7 @@ include('includes/dashboard.php');
                                     </div>
 
                                     <div  class="formn-group mb-3">
-                                      <label style="text-align: left;">Confirm New Password</label>
+                                      <label for="">Confirm New Password</label>
                                       <input type="password" name="confirm_password" id = "password" class="form-control" required="" onChange="onChange()">
                                       <small id="passwordHelpBlock" class="form-text text-muted">
                                         Your confirm password must be the same as the password you've typed.
@@ -78,7 +78,6 @@ include('includes/dashboard.php');
 
                                
 
-                            </div>
                             </div>
                          
 

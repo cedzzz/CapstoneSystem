@@ -28,12 +28,11 @@ if(isset($_POST['change_pwd_btn'])){
 if(isset($_POST['regisuser']))
 {
     $first_name = $_POST['first_name'];
-    $middle_name = $_POST['middle_name'];
     $last_name = $_POST['last_name'];
     $email = $_POST['email'];
     $phone = $_POST['prephone']. '' .$_POST['phone'];
     $password = $_POST['password'];
-    $full_name = $first_name. ' ' .$middle_name. ' ' .$last_name;
+    $full_name = $first_name. ' '.$last_name;
     $userProperties = [
         'email'=>$email,
         'emailVerified' => false,
@@ -183,7 +182,7 @@ if(isset($_POST['addres'])){
         'address'=>$address,
         'city'=>$city,
         'province'=>$province,
-        'zipcode'=>$zipcode,
+        'zipcode'=>$postcode,
         'uid' =>$uid,
     ];
 
@@ -323,7 +322,7 @@ try {
     $_SESSION['verified_user_id'] = $uid;
     $_SESSION['idTokenString'] = $idTokenString;
     $_SESSION['status'] = "Logged in successfully!";
-    header('Location: dashboard.php');
+    header('Location: index.php');
     exit();
 } catch (FailedToVerifyToken $e) {
     echo 'The token is invalid: '.$e->getMessage();
@@ -350,7 +349,7 @@ try{
     $link = $auth->getPasswordResetLink($email);
     $auth->sendPasswordResetLink($email);
     $_SESSION['status'] = "Password reset link has been sent to your email! Check your inbox or spam!";
-    header('Location: dashboard.php');
+    header('Location: login.php');
     exit();
  
   } catch (Exception $e){
