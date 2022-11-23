@@ -254,7 +254,7 @@ include('includes/dashboard.php');
                                 <input type="hidden" name="view_id" id="view_id">
                                 <div class="form-group input-group">
                                         <label style="text-align: left;">Your Document In PDF</label>
-                                        <embed src="" type="application/pdf" id="documentpdf" width="100%" height="300px" />
+                                        <embed type="application/pdf" id="documentpdf" width="100%" height="300px" />
                                     </div>
                                     
                                 </div>
@@ -369,8 +369,11 @@ include('includes/dashboard.php');
         }).get();
         console.log(data);
         $('#view_id').val('<?=$key?>');
+        var storedata = data[12];
         var pdf = document.getElementById('documentpdf');
-        pdf.src = data[12]+'#toolbar=0&navpanes=0&scrollbar=0';
+        pdf.setAttribute('src', storedata+'#toolbar=0&navpanes=0&scrollbar=0');
+        pdf.contentDocument.location.reload();
+
     });
 
     $('.qrcodebtn').on('click', function(){

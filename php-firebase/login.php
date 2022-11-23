@@ -17,6 +17,7 @@ if(isset($_SESSION['verified_user_id']))
     <!-- bootstrap 3.0.2 -->
     <link href="/Capstone_System/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Theme style -->
 
@@ -57,15 +58,16 @@ if(isset($_SESSION['verified_user_id']))
         <div class="panel-body">
           <form role="form" action="actioncode.php" method="POST">
             <h5>&nbsp;Email</h5>
-            <div class="form-floating mb-3">
+            <div class="form-group mb-3">
             <input type="email" class="form-control" style="border-radius:0px" name="email" placeholder="Enter Email" required="">
-              <label for="txt_username" style="font-weight: normal;">Email address</label>
              
             </div>
             <h5>&nbsp;Password</h5>
-            <div class="form-floating mb-3">
-              <input type="password" class="form-control" style="border-radius:0px" name="password" placeholder="Enter Password" required="">
-              <label for="txt_password" style="font-weight: normal;">Password</label> 
+            <div class="form-group mb-3 input-group">
+              <input type="password" id="password" class="form-control" style="border-radius:0px" name="password" placeholder="Enter Password" required="">
+              <span class="input-group-text"><i class="bi bi-eye-slash" id="togglePassword"></i></span>
+
+
             </div>
             <button type="submit" class="btn btn-lg btn-primary" name="btn_login">Log in</button>
             <label id="error" class="label label-danger pull-right"></label> 
@@ -86,5 +88,19 @@ if(isset($_SESSION['verified_user_id']))
       document.getElementById("disappMsg").style.display = "none";
     };
     setTimeout(hideMessage, 2000);
-                        
+   </script>
+   <script>
+const togglePassword = document.querySelector("#togglePassword");
+const password = document.querySelector("#password");
+
+togglePassword.addEventListener("click", function () {
+   
+// toggle the type attribute
+const type = password.getAttribute("type") === "password" ? "text" : "password";
+password.setAttribute("type", type);
+
+// toggle the eye icon
+this.classList.toggle('bi-eye');
+});
+
    </script>
