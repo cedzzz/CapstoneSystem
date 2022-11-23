@@ -18,18 +18,28 @@ include('includes/dashboard.php');
                                       <div class="container-fluid">
                             <div class="main-block">
                                 <form action="actioncode.php" method = "POST" enctype="multipart/form-data">
-                                  <h1 class="title">My Profile</h1>
+                                  <h1 class="title">User Profile</h1>
                                   <fieldset>
                                     <legend>
-                                      <h3>My Details</h3>
+                                      <h3>User Details</h3>
                                     </legend>
                                     <div  class="personal-details">
+                                        <input type="hidden" name="user_id" value="<?=$uid;?>">
                                       <div>
-                                        <div><label>Name</label><input type="text" class="form-control" name="name" value="<?=$user->displayName;?>" required></div>
+                                        
+                                        <div><label>Full Name</label><input type="text" class="form-control" name="name" value="<?=$user->displayName;?>" required></div>
                                         <div><label>Email</label><input type="email" class="form-control" name="email" value="<?=$user->email;?>" required></div>
                                         <div><label>Phone Number</label><input type="text" class="form-control" name="phonenum" value="<?=$user->phoneNumber;?>"  required></div>
-                                        <div><label>Role</label><input name="role" class="form-control"  placeholder="" type="text" value ="<?php $claims = $auth->getUser($uid)->customClaims; if(isset($claims['admin']) == true) {echo "Admin";} elseif(isset($claims['super_admin']) == true) {echo "Super Admin";} elseif($claims == null) {echo "User";}?>"readonly></div>
-                                        <div><label>Account Status</label><input type="text" name="accstatus" class="form-control" value="<?php if($user->disabled) {echo "Disabled";} else{echo "Enabled";}?>" readonly></div>
+                                        <div><label>Role</label><select name="roles" class="form-control">
+                                            <option disabled selected value="">-- The user's role is set to: <?php $claims = $auth->getUser($uid)->customClaims; if(isset($claims['admin']) == true) {echo "Admin";} elseif(isset($claims['super_admin']) == true) {echo "Super Admin";} elseif($claims == null) {echo "User";}?> -- </option>
+                                            <option value="admin">Admin</option>
+                                            <option value="user">User</option>
+                                        </select></div>
+                                        <div><label>Account Status</label><select name="accountstatus" class="form-control">
+                                            <option disabled selected value="">-- The user's account's status is set to: <?php if($user->disabled) {echo "Disabled";} else{echo "Enabled";}?> -- </option>
+                                            <option value="enable">Enabled</option>
+                                            <option value="disable">Disabled</option>
+                                        </select></div>
     
                                       </div>
                                       <div>
@@ -42,11 +52,11 @@ include('includes/dashboard.php');
                                             <?php
                                         }
                                         else{
-                                            echo "Update your profile picture";
+                                            echo "Update the profile picture!";
                                         }
                                         ?>
-                                      <div><label for="">Upload Profile Picture</label><input type = "file" name = "profilepic" class = "form-control"></div>
-                                      <div><label></label><button type="submit" name="savepic" class="btn btn-primary">Save</button></div>
+                                      <div><label for="">Upload User's Profile Picture</label><input type = "file" name = "profilepic" class = "form-control"></div>
+                                      <div><label></label><button type="submit" name="updateuserpic" class="btn btn-primary">Save</button></div>
                                         
                                         
                                       </div>
@@ -54,7 +64,7 @@ include('includes/dashboard.php');
                                     
                                   </fieldset>
                                   
-                                  <button class="submitbtn" name="profupd" type="submit">Submit</button>
+                                  <button class="submitbtn" name="updateuser" type="submit">Submit</button>
                                 </form>
                                 </div> 
                                 <?php

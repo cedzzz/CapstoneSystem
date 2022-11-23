@@ -2,6 +2,358 @@
 session_start();
 include('dbcon.php');
 
+if(isset($_POST['updateres'])){
+    $uid = $_SESSION['verified_user_id'];
+    $edit_id = $_POST['edit_id'];
+    $ref_table = 'resident';
+    $edituid = $uid.'/'.$edit_id;
+   
+    
+    $uid = $_SESSION['verified_user_id'];
+    $firstname = $_POST['first_name'];
+    $middlename = $_POST['middle_name'];
+    $lastname = $_POST['last_name'];
+    $gender = $_POST['gender'];
+    $age = $_POST['age'];
+    $birthdate = $_POST['birthdate'];
+    $religion = $_POST['religion'];
+    $maritalstatus = $_POST['marital_status'];
+    $contactnum = $_POST['contactnum'];
+    $nationality = $_POST['nationality'];
+    $city = $_POST['city'];
+    $province = $_POST['province'];
+    $zipcode = $_POST['zipcode'];
+    $address = $_POST['address'];
+
+
+
+    $updateData = [
+        'firstname'=>$firstname,
+        'middlename'=>$middlename,
+        'lastname'=>$lastname,
+        'gender'=>$gender,
+        'age'=>$age,
+        'birthdate'=>$birthdate,
+        'religion'=>$religion,
+        'contactnum'=>$contactnum,
+        'nationality'=>$nationality,
+        'maritalstatus'=>$maritalstatus,
+        'address'=>$address,
+        'city'=>$city,
+        'province'=>$province,
+        'zipcode'=>$zipcode,
+        'uid' =>$uid,
+    ];
+    $updatequery = $database->getReference($ref_table)->getChild($edituid)->update($updateData);
+    if($updatequery)
+        {
+            $_SESSION['status'] = "Household Member details has been updated! ";
+            header('Location: resident.php?id='.$uid);
+            exit();
+        }
+        else
+        {
+            $_SESSION['statusred'] = "The attempt to update the household member's details is unsuccessful.";
+            header('Location: resident.php?id='.$uid);
+            exit();
+        }
+    }
+
+    if(isset($_POST['updateblot'])){
+        $uid = $_SESSION['verified_user_id'];
+        $edit_id = $_POST['edit_id'];
+        $ref_table = 'blotter';
+        $edituid = $uid.'/'.$edit_id;
+        $complainant_firstname = $_POST['complainant_firstname'];
+        $complainant_middlename = $_POST['complainant_middlename'];
+        $complainant_lastname = $_POST['complainant_lastname'];
+        $complainantaddress = $_POST['complainant_address'];
+        $complainee_firstname = $_POST['complainee_firstname'];
+        $complainee_middlename = $_POST['complainee_middlename'];
+        $complainee_lastname = $_POST['complainee_lastname'];
+        $complaineeaddress = $_POST['complainee_address'];
+        $incident = $_POST['incident'];
+        $incidentevidence = $_FILES['blotter_evidence']['name'];
+        $random_no = rand(1111, 9999);
+        $new_media = $random_no.$incidentevidence;
+        $filename = 'uploads/blotter/'.$new_media;
+        $status = 'Pending';
+    
+        
+    
+    
+        $updateData = [
+            'complainant_firstname'=>$complainant_firstname,
+            'complainant_middlename'=>$complainant_middlename,
+            'complainant_lastname'=>$complainant_lastname,
+            'complainantaddress'=>$complainantaddress,
+            'complainee_firstname'=>$complainee_firstname,
+            'complainee_middlename'=>$complainee_middlename,
+            'complainee_lastname'=>$complainee_lastname,
+            'complaineeaddress'=>$complaineeaddress,
+            'incident'=>$incident,
+            'incidentevidence'=>$filename,
+            'status'=>$status,
+        ];
+    
+        $updatequery = $database->getReference($ref_table)->getChild($edituid)->update($updateData);
+        if($updatequery)
+            {
+                if($incidentevidence!=NULL){
+                    move_uploaded_file($_FILES['blotter_evidence']['tmp_name'], "uploads/blotter/".$new_media);
+                }
+                $_SESSION['status'] = "Blotter details hasbeen updated!";
+                header("Location: blotter.php?id=".$uid);
+                exit(0);
+            }
+            else
+            {
+                $_SESSION['statusred'] = "The attempt to update the blotter's details is unsuccessful.";
+                header('Location: blotter.php?id='.$uid);
+                exit();
+            }
+        }
+
+        if(isset($_POST['updateuser'])){
+            $profile = $_FILES['profilepic']['name']; 
+            $random_no = rand(1111, 9999);
+            $user_id =  $_POST['user_id'];
+            $uid = $_SESSION['verified_user_id'];
+            $user = $auth->getUser($user_id);
+            $new_image = $random_no.$profile;
+            $old_image = $user ->photoUrl;
+            $name = $_POST['name'];
+            $phone = $_POST['phonenum'];
+            $email = $_POST['email'];
+            $accountstatus = $_POST['accountstatus'];
+            $roles = $_POST['roles'];
+            if($profile!=NULL){
+                $filename = 'uploads/profilepictures/'.$new_image;
+            }
+            else{
+                $filename = $old_image;
+            }
+            
+            $properties = [
+                'email' => $email,
+                'displayName' => $name,
+                'phoneNumber' => $phone,
+                'photoUrl' => $filename,
+            ];
+            
+            if($accountstatus == 'enable'){
+                $auth -> enableUser($user_id);
+              }
+              elseif($accountstatus == 'disable'){
+                $auth -> disableUser($user_id);
+              }
+
+              if($roles == 'admin'){
+                $auth -> setCustomUserClaims($user_id,['admin' => true]);
+              }
+              elseif($roles == 'user'){
+                $auth -> setCustomUserClaims($user_id, null);
+              }
+
+              $updatedUser = $auth ->updateUser($user_id,$properties); 
+        
+            if($updatedUser){
+        
+                if($profile!=NULL){
+                    move_uploaded_file($_FILES['profilepic']['tmp_name'], "uploads/profilepictures/".$new_image);
+                    if($old_image!=NULL){
+                        unlink($old_image);
+                    }
+                }
+                $_SESSION['status'] = "User's profile details have been updated!";
+                header("Location: users.php?id=".$uid);
+                exit(0);
+            }
+            else{
+                $_SESSION['statusred'] = "The attempt to update the user's profile is unsuccessful.";
+                header("Location: users.php?id=".$uid);
+                exit(0);
+            }
+        }
+
+        if(isset($_POST['updateuserpic'])){
+            $profile = $_FILES['profilepic']['name']; 
+            $random_no = rand(1111, 9999);
+            $uid = $_SESSION['verified_user_id'];
+            $user_id =  $_POST['user_id'];
+            $user = $auth->getUser($user_id);
+            $new_image = $random_no.$profile;
+            $old_image = $user->photoUrl;
+        
+            if($profile!=NULL){
+                $filename = 'uploads/profilepictures/'.$new_image;
+            }
+            else{
+                $filename = $old_image;
+            }
+        
+            $properties = [
+                'photoUrl' => $filename,
+            ];
+        
+            $updatedUser = $auth ->updateUser($user_id,$properties); 
+        
+            if($updatedUser){
+        
+                if($profile!=NULL){
+                    move_uploaded_file($_FILES['profilepic']['tmp_name'], "uploads/profilepictures/".$new_image);
+                    if($old_image!=NULL){
+                        unlink($old_image);
+                    }
+                }
+                $_SESSION['status'] = "User's profile picture has been updated!";
+                header("Location: users.php?id=".$uid);
+                exit(0);
+            }
+            else{
+                $_SESSION['statusred'] = "The attempt to update the user's profile picture is unsuccessful.";
+                header("Location: users.php?id=".$uid);
+                exit(0);
+            }
+        }
+    
+
+    if(isset($_POST['deleteallres'])){
+        $uid = $_SESSION['verified_user_id'];
+        $del_id = $_POST['del_id'];
+        $ref_table = 'resident';
+        $deletequery = $database->getReference($ref_table)->getChild($uid)->remove();
+        
+        if($deletequery)
+            {
+                $_SESSION['status'] = "All household members have been removed from your list!";
+                header('Location: resident.php?id='.$uid);
+                exit();
+            }
+            else
+            {
+                $_SESSION['statusred'] = "The attempt to remove all household members from your list is unsuccessful.";
+                header('Location: resident.php?id='.$uid);
+                exit();
+            }
+        }
+
+        if(isset($_POST['deleteallblot'])){
+            $uid = $_SESSION['verified_user_id'];
+            $del_id = $_POST['del_id'];
+            $ref_table = 'blotter';
+            $deletequery = $database->getReference($ref_table)->getChild($uid)->remove();
+            
+            if($deletequery)
+                {
+                    $_SESSION['status'] = "All blotters have been removed from your list!";
+                    header('Location: blotter.php?id='.$uid);
+                    exit();
+                }
+                else
+                {
+                    $_SESSION['statusred'] = "The attempt to remove all blotter from your list is unsuccessful.";
+                    header('Location: blotter.php?id='.$uid);
+                    exit();
+                }
+            }
+            if(isset($_POST['deletealldoc'])){
+                $uid = $_SESSION['verified_user_id'];
+                $del_id = $_POST['del_id'];
+                $ref_table = 'documents';
+                $deletequery = $database->getReference($ref_table)->getChild($uid)->remove();
+                
+                if($deletequery)
+                    {
+                        $_SESSION['status'] = "All documents have been removed from your list!";
+                        header('Location: documents.php?id='.$uid);
+                        exit();
+                    }
+                    else
+                    {
+                        $_SESSION['statusred'] = "The attempt to remove all documents from your list is unsuccessful.";
+                        header('Location: documents.php?id='.$uid);
+                        exit();
+                    }
+                }
+
+if(isset($_POST['deleteres'])){
+    $uid = $_SESSION['verified_user_id'];
+    $del_id = $_POST['del_id'];
+    $ref_table = 'resident';
+    $deluid = $uid.'/'.$del_id;
+    $deletequery = $database->getReference($ref_table)->getChild($deluid)->remove();
+    
+    if($deletequery)
+        {
+            $_SESSION['status'] = "Household Member has been removed from your list!";
+            header('Location: resident.php?id='.$uid);
+            exit();
+        }
+        else
+        {
+            $_SESSION['statusred'] = "The attempt to remove the household member from your list is unsuccessful.";
+            header('Location: resident.php?id='.$uid);
+            exit();
+        }
+    }
+
+    if(isset($_POST['deleteblot'])){
+        $uid = $_SESSION['verified_user_id'];
+        $del_id = $_POST['del_id'];
+        $ref_table = 'blotter';
+        $deluid = $uid.'/'.$del_id;
+        $deletequery = $database->getReference($ref_table)->getChild($deluid)->remove();
+        
+        if($deletequery)
+            {
+                $_SESSION['status'] = "The blotter has been removed from your list!";
+                header('Location: blotter.php?id='.$uid);
+                exit();
+            }
+            else
+            {
+                $_SESSION['statusred'] = "The attempt to remove the blotter from your list is unsuccessful.";
+                header('Location: blotter.php?id='.$uid);
+                exit();
+            }
+        }
+        if(isset($_POST['deleteusers'])){
+            $uid = $_SESSION['verified_user_id'];
+            $del_id = $_POST['del_id'];
+            
+            try{
+                $auth->deleteUser($del_id);
+                $_SESSION['status'] = "User has been deleted from your system!";
+                header('Location: users.php?id='.$uid);
+                 exit();
+            } catch(Exception $e){
+                $_SESSION['status'] = "The attempt to delete a user is unsuccessful.";
+                header('Location: users.php?id='.$uid);
+                 exit();
+            }
+            }
+            
+    if(isset($_POST['deletedoc'])){
+        $uid = $_SESSION['verified_user_id'];
+        $del_id = $_POST['del_id'];
+        $ref_table = 'documents';
+        $deluid = $uid.'/'.$del_id;
+        $deletequery = $database->getReference($ref_table)->getChild($deluid)->remove();
+        
+        if($deletequery)
+            {
+                $_SESSION['status'] = "The document has been removed from your list!";
+                header('Location: documents.php?id='.$uid);
+                exit();
+            }
+            else
+            {
+                $_SESSION['statusred'] = "The attempt to remove the document from your list is unsuccessful.";
+                header('Location: documents.php?id='.$uid);
+                exit();
+            }
+        }
 
 if(isset($_POST['change_pwd_btn'])){
     $new_password = $_POST['new_password'];
@@ -182,7 +534,7 @@ if(isset($_POST['addres'])){
         'address'=>$address,
         'city'=>$city,
         'province'=>$province,
-        'zipcode'=>$postcode,
+        'zipcode'=>$zipcode,
         'uid' =>$uid,
     ];
 
@@ -190,63 +542,13 @@ if(isset($_POST['addres'])){
     $postRef_result = $database->getReference($ref_table)->getChild($uid)->push($postData);
 
     if($postRef_result){
-        $_SESSION['status'] = "Resident Added!";
+        $_SESSION['status'] = "Household Member has been added successfully!";
         header("Location: resident.php?id=".$uid);
         exit(0);
     }
     else{
-        $_SESSION['statusred'] = "Resident Not Added!";
+        $_SESSION['statusred'] = "The attempt to add a household member is unsuccessful.";
         header("Location: resident.php?id=".$uid);
-        exit(0);
-    }
-}
-
-if(isset($_POST['reqdoc'])){
-    $uid = $_SESSION['verified_user_id'];
-    $firstname = $_POST['first_name'];
-    $middlename = $_POST['middle_name'];
-    $lastname = $_POST['last_name'];
-    $gender = $_POST['gender'];
-    $age = $_POST['age'];
-    $birthdate = $_POST['birthdate'];
-    $religion = $_POST['religion'];
-    $maritalstatus = $_POST['marital_status'];
-    $nationality = $_POST['nationality'];
-    $document_type = $_POST['document_type'];
-    $businesspermit_type = $_POST['businesspermit_type'];
-    $barangaypermit_type = $_POST['barangaypermit_type'];
-    $barangaycertificate_type = $_POST['barangaycertificate_type'];
-
-
-
-    $postData = [
-        'firstname'=>$firstname,
-        'middlename'=>$middlename,
-        'lastname'=>$lastname,
-        'gender'=>$gender,
-        'age'=>$age,
-        'birthdate'=>$birthdate,
-        'religion'=>$religion,
-        'nationality'=>$nationality,
-        'maritalstatus'=>$maritalstatus,
-        'documenttype'=>$document_type,
-        'businesspermittype'=>$businesspermit_type,
-        'barangaypermittype'=>$barangaypermit_type,
-        'barangaycertificatetype'=>$barangaycertificate_type,
-        'uid' =>$uid,
-    ];
-
-    $ref_table = "requesteddocuments";
-    $postRef_result = $database->getReference($ref_table)->getChild($uid)->push($postData);
-
-    if($postRef_result){
-        $_SESSION['status'] = "Document Request Form has been Submitted Successfully!";
-        header("Location: requestdocuments.php?id=".$uid);
-        exit(0);
-    }
-    else{
-        $_SESSION['statusred'] = "Document Request Form has not been Submitted Successfully.";
-        header("Location: requestdocuments.php?id=".$uid);
         exit(0);
     }
 }
@@ -266,7 +568,7 @@ if(isset($_POST['addblot'])){
     $random_no = rand(1111, 9999);
     $new_media = $random_no.$incidentevidence;
     $filename = 'uploads/blotter/'.$new_media;
-    
+    $status = 'Pending';
 
     
 
@@ -282,6 +584,7 @@ if(isset($_POST['addblot'])){
         'complaineeaddress'=>$complaineeaddress,
         'incident'=>$incident,
         'incidentevidence'=>$filename,
+        'status'=>$status,
     ];
 
     $ref_table = "blotter";
@@ -301,6 +604,92 @@ if(isset($_POST['addblot'])){
         exit(0);
     }
 }
+
+if(isset($_POST['addusers']))
+{
+    $uid = $_SESSION['verified_user_id'];
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $prephone = '+63';
+    $phone = $prephone. '' .$_POST['phone'];
+    $password = $_POST['password'];
+    $userProperties = [
+        'email'=>$email,
+        'emailVerified' => false,
+        'phoneNumber'=>$phone,
+        'password'=>$password,
+        'displayName'=>$name,
+    ];
+    
+    $createdUser = $auth->createUser($userProperties);
+
+    if($createdUser)
+    {
+        $_SESSION['status'] = "User has been added!";
+        header('Location: users.php?id='.$uid);
+        exit();
+    }
+    else
+    {
+        $_SESSION['status'] = "The attempt to add a user is unsuccessful.";
+        header('Location: users.php?id='.$uid);
+        exit();
+    }
+}
+
+if(isset($_POST['reqdoc'])){
+    $uid = $_SESSION['verified_user_id'];
+    $firstname = $_POST['first_name'];
+    $middlename = $_POST['middle_name'];
+    $lastname = $_POST['last_name'];
+    $gender = $_POST['gender'];
+    $age = $_POST['age'];
+    $birthdate = $_POST['birthdate'];
+    $religion = $_POST['religion'];
+    $maritalstatus = $_POST['marital_status'];
+    $nationality = $_POST['nationality'];
+    $document_type = $_POST['document_type'];
+    $permitcertificate_type = $_POST['permitcertificate_type'];
+    $barangaypermit_type = $_POST['barangaypermit_type'];
+    $barangaycertificate_type = $_POST['barangaycertificate_type'];
+    $documents = '';
+    $status = 'Pending';
+    
+
+
+
+    $postData = [
+        'firstname'=>$firstname,
+        'middlename'=>$middlename,
+        'lastname'=>$lastname,
+        'gender'=>$gender,
+        'age'=>$age,
+        'birthdate'=>$birthdate,
+        'religion'=>$religion,
+        'nationality'=>$nationality,
+        'maritalstatus'=>$maritalstatus,
+        'documenttype'=>$document_type,
+        'permitcertificatetype'=> $permitcertificate_type,
+        'documents'=>$documents,
+        'status'=>$status,
+        'uid' =>$uid,
+    ];
+
+    $ref_table = "documents";
+    $postRef_result = $database->getReference($ref_table)->getChild($uid)->push($postData);
+
+    if($postRef_result){
+        $_SESSION['status'] = "Your document request form has been submitted successfully!";
+        header("Location: documents.php?id=".$uid);
+        exit(0);
+    }
+    else{
+        $_SESSION['statusred'] = "The attempt to submit your document request form has been unsuccessful";
+        header("Location: documents.php?id=".$uid);
+        exit(0);
+    }
+}
+
 
 
 
@@ -370,7 +759,6 @@ else
     header('Location: login.php');
     exit();
 }
-
 
 
 

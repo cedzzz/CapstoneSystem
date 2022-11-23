@@ -58,61 +58,61 @@ include('includes/dashboard.php');
                                           <label>Type of Document</label>              
                                             <select class="form-control" name="document_type" id="document_type" required="" onchange='toggleDropdown(this);'>
 		                                     <option disabled selected value="">-- select a document to be requested --</option>
-		                                     <option value="Barangay_BusinessPermit">Barangay Business Permit</option>
-		                                     <option value="Barangay_Permit">Barangay Permit</option>
-                                             <option value="Barangay_Certificate">Barangay Certificate</option>
-                                             <option value="Barangay_WorkingPermit">Barangay Working Permit</option>
+		                                     <option value="Barangay Business Permit">Barangay Business Permit</option>
+		                                     <option value="Barangay Permit">Barangay Permit</option>
+                                             <option value="Barangay Certificate">Barangay Certificate</option>
+                                             <option value="Barangay Working Permit">Barangay Working Permit</option>
 		                                    </select>
 
-                                            <select class="form-control" name="businesspermit_type" id="businesspermit_type" style="display:none;" onchange = 'otherToggle(this)'>
+                                            <select class="form-control" name="permitcertificate_type" id="businesspermit_type" style="display:none;" onchange = 'otherToggle(this)'>
 		                                     <option disabled selected value="">-- select a business permit type to be requested --</option>
-		                                     <option value="Sari-Sari_Store">Sari-Sari Store</option>
+		                                     <option value="Sari-Sari Store">Sari-Sari Store</option>
 		                                     <option value="Liquor">Liquor Permit</option>
                                              <option value="Ambulant">Ambulant</option>
-		                                     <option value="Bank_Factories">Banks and Factories</option>
-                                             <option value="Gasoline_Station">Gasoline Station</option>
+		                                     <option value="Banks And Factories">Banks and Factories</option>
+                                             <option value="Gasoline Station">Gasoline Station</option>
                                              <option value="Lessor">Lessor</option>
-                                             <option value="Warehouse_Depot">Warehouse/Depot</option>
+                                             <option value="Warehouse Depot">Warehouse/Depot</option>
                                              <option value="Contractor">Contractor</option>
                                              <option value="Others">Others</option>
 		                                    </select>
                                             
 
-                                            <select class="form-control" name="barangaypermit_type" id="barangaypermit_type" style="display:none;">
+                                            <select class="form-control" name="permitcertificate_type" id="barangaypermit_type" style="display:none;">
 		                                     <option disabled selected value="">-- select a permit type to be requested --</option>
-		                                     <option value="Cable_Wire_Installation">For Cable and Wire Installation</option>
+		                                     <option value="Cable Wire Installation">For Cable and Wire Installation</option>
 		                                     <option value="Excavation">For Excavation (Digging of Hole)</option>
                                              <option value="Demolition">For Demolition</option>
 		                                     <option value="Construction">For Construction</option>
-                                             <option value="Renovation_Repair">For Renovation and Repair of Comm'l Edifice</option>
-                                             <option value="Fence_Construction">For Construction of Fence</option>
-                                             <option value="Telcom_Tower">For Telecommunication Tower</option>
+                                             <option value="Renovation Repair">For Renovation and Repair of Comm'l Edifice</option>
+                                             <option value="Fence Construction">For Construction of Fence</option>
+                                             <option value="Telcom Tower">For Telecommunication Tower</option>
 		                                    </select>
 
-                                            <select class="form-control" name="barangaycertificate_type" id="barangaycertificate_type" style="display:none;">
+                                            <select class="form-control" name="permitcertificate_type" id="barangaycertificate_type" style="display:none;">
 		                                     <option disabled selected value="">-- select the purpose of the certificate to be requested --</option>
-		                                     <option value="Residency_ID">Residency/Identification</option>
-		                                     <option value="Local_Employment">Local Employment</option>
-                                             <option value="Travel_Overseas">Travel/Overseas Employment</option>
+		                                     <option value="Residency ID">Residency/Identification</option>
+		                                     <option value="Local Employment">Local Employment</option>
+                                             <option value="Travel Overseas">Travel/Overseas Employment</option>
 		                                     <option value="Loan">Loan Purposes</option>
-                                             <option value="Passport_Visa">Passport/VISA</option>
-                                             <option value="Good_Moral">Good Moral Character</option>
-                                             <option value="Birth_Requirement">Birth Certificate Requirement</option>
-                                             <option value="Death_Requirement">Death Certificate Requirement</option>
-                                             <option value="Marriage_Requirement">Marriage Certificate Requirement</option>
+                                             <option value="Passport Visa">Passport/VISA</option>
+                                             <option value="Good Moral">Good Moral Character</option>
+                                             <option value="Birth Requirement">Birth Certificate Requirement</option>
+                                             <option value="Death Requirement">Death Certificate Requirement</option>
+                                             <option value="Marriage Requirement">Marriage Certificate Requirement</option>
                                              <option value="Bail">Bail Bond Requirement</option>
                                              <option value="Firearms">Firearms License Requirement</option>
-                                             <option value="Driver_License">Driver's License Requirements</option>
-                                             <option value="Postal_ID">Postal ID Application/Requirements</option>
-                                             <option value="GSIS_Requirement">GSIS Requirements</option>
-                                             <option value="SSS_Requirement">SSS Requirements</option>
-                                             <option value="Trike_Terminal">Trike Terminal Requirements</option>
-                                             <option value="Tru_Franchise">Tru Franchise</option>
-                                             <option value="Lipat_Bahay">Lipat Bahay/ Transporting of Belongings</option>
+                                             <option value="Driver License">Driver's License Requirements</option>
+                                             <option value="Postal ID">Postal ID Application/Requirements</option>
+                                             <option value="GSIS Requirement">GSIS Requirements</option>
+                                             <option value="SSS Requirement">SSS Requirements</option>
+                                             <option value="Trike Terminal">Trike Terminal Requirements</option>
+                                             <option value="Tru Franchise">Tru Franchise</option>
+                                             <option value="Lipat Bahay">Lipat Bahay/ Transporting of Belongings</option>
 		                                    </select>
                                           </div>
 
-                                         <div id = "otherspermit" style = "display:none;"> <label>Others</label><input type = "text" class = "form-control" placeholder ="State the business type that you want a permit" name = "othersbusiness"></div>
+                                         <div id = "otherspermit" style = "display:none;"> <label>Others</label><input type = "text" class = "form-control" id= "othersinput" placeholder ="State the business type that you want a permit" name = "permitcertificate_type" disabled></div>
                                          
                                        
                             

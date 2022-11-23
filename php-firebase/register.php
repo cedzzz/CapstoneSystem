@@ -11,25 +11,21 @@ if(isset($_SESSION['verified_user_id']))
 <!DOCTYPE HTML>
 <html>
 <head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
 function onChange() {
   const password = document.querySelector('input[name=password]');
-  const confirm = document.querySelector('input[name=confirmpassword]');
-  if (confirm.value === password.value) {
-    confirm.setCustomValidity('');
+  const confirmpassword = document.querySelector('input[name=confirmpassword]');
+  if (confirmpassword.value === password.value) {
+    confirmpassword.setCustomValidity('');
   } else {
-    confirm.setCustomValidity('Passwords do not match');
+    confirmpassword.setCustomValidity("Your confirm password must be the same as the password you've typed.");
   }
 }
 </script>
-<style>
-    #password:not(:focus) + #passwordHelpBlock{
-    display: none;
-}
-</style>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
 <link rel="stylesheet" href="style.css">
 <link rel = "icon" type = "image/png" href = "logo.png">
@@ -81,20 +77,17 @@ function onChange() {
     	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 		</div>
-        <input class="form-control" id="password" name= "password" placeholder="Password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" type="password" required="" onChange="onChange()">
-        <small id="passwordHelpBlock" class="form-text text-muted">
-         Your password must contain at least 8 characters, including at least one small letter, one capital letter, one special character (e.g ~`!@#$%^&*()"-_+{}[];:<>,.?/|\ ), and must not contain spaces or emoji.
-        </small>
+        <input class="form-control" id="password" name= "password" placeholder="Password" oninvalid="this.setCustomValidity('Your password must contain at least 8 characters, including at least one small letter, one capital letter, one special character, and must not contain spaces or emoji.')"  pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" oninput="this.setCustomValidity('')" type="password" required="" onChange="onChange()">
+        <span class="input-group-text"><i class="bi bi-eye-slash" id="togglePassword"></i></span>
+        
     </div>
 
     <div class="form-group input-group">
     	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 		</div>
-        <input class="form-control" name="confirmpassword" id ="password" placeholder="Confirm Password" type="password" required="" onChange="onChange()">
-        <small id="passwordHelpBlock" class="form-text text-muted">
-            Your confirm password must be the same as the password you've typed.
-         </small>
+        <input class="form-control" name="confirmpassword" id ="confirmpassword" title =" Your confirm password must be the same as the password you've typed." placeholder="Confirm Password" type="password" required="" onChange="onChange()">
+        <span class="input-group-text"><i class="bi bi-eye-slash" id="toggleConfirmPassword"></i></span>
     </div>
     <p class="divider-text">
         <span class=""></span>
@@ -112,5 +105,31 @@ function onChange() {
 
 </div> 
 <!--container end.//-->
+<script>
+const togglePassword = document.querySelector("#togglePassword");
+const password = document.querySelector("#password");
+
+togglePassword.addEventListener("click", function () {
+   
+// toggle the type attribute
+const type = password.getAttribute("type") === "password" ? "text" : "password";
+password.setAttribute("type", type);
+
+// toggle the eye icon
+this.classList.toggle('bi-eye');
+});
+const toggleConfirmPassword = document.querySelector("#toggleConfirmPassword");
+const confirmpassword = document.querySelector("#confirmpassword");
+
+toggleConfirmPassword.addEventListener("click", function () {
+   
+// toggle the type attribute
+const type = confirmpassword.getAttribute("type") === "password" ? "text" : "password";
+confirmpassword.setAttribute("type", type);
+
+// toggle the eye icon
+this.classList.toggle('bi-eye');
+});
+</script>
 </body>
 </html>

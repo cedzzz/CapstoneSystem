@@ -1,6 +1,18 @@
 <?php
 include('authenticate.php');
 include('dbcon.php');
+$accountstatus = $auth->getUser($uid);
+if($accountstatus->disabled){
+
+
+?>
+<script type="text/javascript">
+window.location.href = 'logout.php';
+</script>
+<?php
+    $_SESSION['statusred'] = "YOUR ACCOUNT HAS BEEN DISABLED!";
+    exit(0);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +21,7 @@ include('dbcon.php');
     <meta charset="utf-8">
     <title>Barangay Santol: Baranagay Management System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link href="/Capstone_System/assets/css/icons.min.css" rel="stylesheet" type="text/css">
     <link href="/Capstone_System/assets/css/app.min.css" rel="stylesheet" type="text/css" id="light-style">
     <link href="/Capstone_System/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="dark-style">
@@ -17,14 +30,14 @@ include('dbcon.php');
 
 
 <body class="loading"
-    data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
+    data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": false}'>
 
     <div class="wrapper">
 
         <div class="leftside-menu">
 
 
-            <a href="index.php" class="logo text-center logo-light">
+            <a href="index.php" style="text-decoration:none;" class="logo text-center logo-light">
                 <span class="logo-lg">
                     <img src="logo.png" alt="" height="75">
                     <span>Barangay Santol</span>
@@ -56,35 +69,37 @@ include('dbcon.php');
 
                     <li class="side-nav-item">
                         <a data-bs-toggle="collapse" href="#sidebarDashboards" aria-expanded="false"
-                            aria-controls="sidebarDashboards" class="side-nav-link">
+                            aria-controls="sidebarDashboards" class="side-nav-link" >
                             <i class="uil-home-alt"></i>
-                            <span class="badge bg-success float-end"></span>
-                            <span> Dashboards </span>
+                            <span> Dashboard </span>
                         </a>
                         <div class="collapse" id="sidebarDashboards">
                             <ul class="side-nav-second-level">
                             <?php $claims = $auth->getUser($uid)->customClaims; if(isset($claims['admin']) == true):?>
                                 <li>
-                                    <a href="#">Analytics</a>
+                                    <a href="#" >Analytics</a>
+                                </li>
+                                <li>
+                                    <a href="users.php?id=<?=$user->uid;?>">Manage Users</a>
+                                </li>
+                                <li>
+                                    <a href="#">Manage Blotters</a>
+                                </li>
+                                <li>
+                                    <a href="#">Manage Documents</a>
                                 </li>
                             <?php else : ?>
                                 <li>
-                                    <a href="resident.php?id=<?=$user->uid;?>">Residents</a>
+                                    <a href="resident.php?id=<?=$user->uid;?>" style="text-decoration:none;"> Residents</a>
                                 </li>
                                 <li>
-                                    <a href="#">Barangay Officials</a>
+                                    <a href="blotter.php?id=<?=$user->uid;?>" style="text-decoration:none;">E-Blotter</a>
                                 </li>
                                 <li>
-                                    <a href="blotter.php?id=<?=$user->uid;?>">E-Blotter</a>
+                                    <a href="history.php" style="text-decoration:none;">History</a>
                                 </li>
                                 <li>
-                                    <a href="history.php">History</a>
-                                </li>
-                                <li>
-                                    <a href="viewdocuments.php?id=<?=$user->uid;?>">Manage Documents</a>
-                                </li>
-                                <li>
-                                    <a href="requestdocuments.php?id=<?=$user->uid;?>">Request Documents</a>
+                                    <a href="documents.php?id=<?=$user->uid;?>" style="text-decoration:none;">Documents</a>
                                 </li>
                             <?php endif; ?>
                             </ul>
@@ -117,10 +132,10 @@ include('dbcon.php');
                                     </li>
 
                                     <li class="dropdown notification-list">
-                                        <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown"
+                                        <a class="nav-link  arrow-none" data-bs-toggle="dropdown"
                                             href="#" role="button" aria-haspopup="false" aria-expanded="false">
                                             <i class="dripicons-bell noti-icon link-secondary"></i>
-                                            <span class="noti-icon-badge"></span>
+                                            
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg">
 
@@ -147,17 +162,12 @@ include('dbcon.php');
                                     </li>
 
 
-                                    <li class="notification-list">
-                                        <a class="nav-link end-bar-toggle" href="javascript: void(0);">
-                                            <i class="dripicons-gear noti-icon link-secondary"></i>
-                                        </a>
-                                    </li>
                                     <?php
                                         $uid = $_SESSION['verified_user_id'];
                                         $user = $auth->getUser($uid);
                                     ?>
                                     <li class="dropdown notification-list">
-                                        <a class="nav-link dropdown-toggle nav-user arrow-none me-0"
+                                        <a class="nav-link nav-user arrow-none me-0"
                                             data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                                             aria-expanded="false">
                                             <span class="account-user-avatar">
@@ -173,11 +183,10 @@ include('dbcon.php');
 
                                             </span>
                                         </a>
-                                        <div
-                                            class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
+                                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
                                      
-                                            <div class=" dropdown-header noti-title">
-                                                <h6 class="text-overflow m-0">Welcome <?=$user->displayName;?> ! </h6>
+                                            <div class="dropdown-header noti-title">
+                                                <h6 class="text-overflow m-0">Welcome <?=$user->displayName;?>! </h6>
                                             </div>
 
                                         
@@ -220,8 +229,12 @@ include('dbcon.php');
                                         echo "<h5 id='disappMsg' class='alert alert-info'>".$_SESSION['statusinfo']."</h5>";
                                         unset($_SESSION['statusinfo']);
                                     }
+                                    elseif(isset($_SESSION['statusred']))
+                                    {
+                                        echo "<h5 id='disappMsg' class='alert alert-danger'>".$_SESSION['statusred']."</h5>";
+                                        unset($_SESSION['statusred']);
+                                    }
                                     ?>
-
                            
 
                     

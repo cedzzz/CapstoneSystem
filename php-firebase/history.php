@@ -2,12 +2,7 @@
 include('includes/dashboard.php');
 
 ?>
-<head>
-<link href="/Capstone_System/assets/css/icons.min.css" rel="stylesheet" type="text/css">
-    <link href="/Capstone_System/assets/css/app.min.css" rel="stylesheet" type="text/css" id="light-style">
-    <link rel = "icon" type = "image/png" href = "logo.png">
-    <link rel="stylesheet" href="popup.css">
-</head>
+
 <div class="container-fluid">
                     <h2>History</h2>
                     <h3>Barangay Santol</h3>
@@ -20,7 +15,7 @@ include('includes/dashboard.php');
 
 
                 </div>
-        </div>
+                </div>
     </div>
 
                             

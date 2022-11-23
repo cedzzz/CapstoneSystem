@@ -3,66 +3,388 @@ include('includes/dashboard.php');
 
 ?>
 <head>
-<link href="/Capstone_System/assets/css/icons.min.css" rel="stylesheet" type="text/css">
-    <link href="/Capstone_System/assets/css/app.min.css" rel="stylesheet" type="text/css" id="light-style">
     <link rel = "icon" type = "image/png" href = "logo.png">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="popup.css">
 </head>
- <div class="container-fluid">
-                            <div class="main-block">
-                                <form action="/">
-                                  <h1 class="title">Manage Residents</h1>
-                                  <fieldset>
-                                    <legend>
-                                      <h3>Details</h3>
-                                    </legend>
-                                    <div  class="personal-details">
-                                      <div>
-                                        <div><label>Name</label><input type="text" name="name" required></div>
-                                        <div><label>Birthplace</label><input type="text" name="name"></div>
-                                        <div><label>Birthdate</label><input type="date" name="name" required></div>
-                                        <div><label>Nationality</label><input type="text" name="name"></div>
-                                      </div>
-                                      <div>
-                                        <div><label>Religion</label><input type="text" name="name"></div>
-                                        <div><label>Martial Status</label><input type="text" name="name"></div>
-                                        <div><label>Contact Number*</label><input type="text" name="name"></div>                                        
-                                        <div>
-                                            <label>Gender</label>              
-                                            <select required>
-                                              <option value=""></option>
-                                              <option value="">Male</option>
-                                              <option value="">Female</option>
-                                
-                                            </select>
-                                          </div>
-                                      </div>
+<?php
+                                if(isset($_GET['id']))
+                                {
+                                    $uid = $_GET['id'];
+                                    try{
+                                        $user=$auth->getUser($uid);
+                                        ?>
+<div class="container-xl">
+                    <div class="table-responsive">
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h2>Manage <b>Residents</b></h2>
+                                        <a href="#addResidents" class="btn btn-success" data-toggle="modal"><i
+                                                class="material-icons">&#xE147;</i> <span>Add New Residents</span></a>
+                                        <a href="#deleteAll" class="btn btn-danger" data-toggle="modal"><i
+                                                class="material-icons">&#xE15C;</i> <span>Delete All</span></a>
                                     </div>
-                                  </fieldset>
-                                  
-                                  <button class="submitbtn" type="submit" href="/">Submit</button>
-                                </form>
-                                </div> 
+                                    <div class="col-sm-6">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Household Member</th>
+                                        <th>First Name</th>
+                                        <th>Middle Name</th>
+                                        <th>Last Name</th>
+                                        <th>Gender</th>
+                                        <th>Age</th>
+                                        <th>Birthdate</th>
+                                        <th>Religion</th>
+                                        <th>Marital Status</th>
+                                        <th>Contact Number</th>
+                                        <th>Nationality</th>
+                                        <th>Address</th>
+                                        <th>City</th>
+                                        <th>Province</th>
+                                        <th>ZIP Code</th>   
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    include('dbcon.php');
+                                    $uid = $_SESSION['verified_user_id'];
+                                    $ref_table = "resident";
+                                    $fetchdata = $database->getReference($ref_table)->getChild($uid)->getValue();
+                                    if ($fetchdata > 0)
+                                                    {
+                                                        $x = 1;
+                                                        foreach($fetchdata as $key  => $row)
+                                                        {
+                                    ?>
+                                    <tr>
+                                        <td><?=$x++;?></td>
+                                        <td><?=$row['firstname'];?></td>
+                                        <td><?=$row['middlename'];?></td>
+                                        <td><?=$row['lastname'];?></td>
+                                        <td><?=$row['gender'];?></td>
+                                        <td><?=$row['age'];?></td>
+                                        <td><?=$row['birthdate'];?></td>
+                                        <td><?=$row['religion'];?></td>
+                                        <td><?=$row['maritalstatus'];?></td>
+                                        <td><?=$row['contactnum'];?></td>
+                                        <td><?=$row['nationality'];?></td>
+                                        <td><?=$row['address'];?></td>
+                                        <td><?=$row['city'];?></td>
+                                        <td><?=$row['province'];?></td>
+                                        <td><?=$row['zipcode'];?></td>
+                                        <td>
+                                            <a href="#editResidentsModal" class="edit editbtn" data-toggle="modal"><i
+                                                    class="material-icons" style= "color: #FFDF00;" data-toggle="tooltip"
+                                                    title="Edit">&#xE254;</i> </a>
+                                        </td>
+                                        <td>
+                                            <a href="#deleteResidents" style= "color: red;" class="delete deletebtn" data-toggle="modal"><i
+                                                    class="material-icons" data-toggle="tooltip"
+                                                    title="Delete" value="<?=$key?>">&#xE872;</i></a>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                                        }
+                                                        
+                                                    }
+                                                    else{
+
+                                                            echo "<h5 id='disappMsg' class='alert alert-danger'>"."NO RECORDS FOUND!"."</h5>";
+                                                        }
+                                                    ?>
+
+                <!-- Add Modal  -->
+                <div id="addResidents" class="modal fade" data-backdrop="false">
+                    <div class="modal-dialog  modal-dialog-centered">
+                        <div class="modal-content">
+                            <form action="actioncode.php" method="POST">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Add Resident</h4>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">First Name</label>
+                                        <input type="text" class="form-control" name="first_name"  required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Middle Name</label>
+                                        <input type="text" class="form-control" name="middle_name"  required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Last Name</label>
+                                        <input type="text" class="form-control" name="last_name" required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Gender</label>
+                                        <select class="form-control" name="gender" required="">
+		                                     <option disabled selected value="">-- select a gender --</option>
+		                                     <option value="Male">Male</option>
+		                                     <option value="Female">Female</option>
+		                                    </select>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Age</label>
+                                        <input name="age" class="form-control"  placeholder="" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  required="">
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Birthdate</label>
+                                        <input type="date" class="form-control" name="birthdate" required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Religion</label>
+                                        <input type="text" class="form-control" name="religion"  required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Marital Status</label>
+                                        <select class="form-control" name="marital_status"  required="">
+		                                     <option disabled selected value="">-- select a marital status --</option>
+		                                     <option value="Single">Single</option>
+		                                     <option value="Married">Married</option>
+                                             <option value="Divorced">Divorced</option>
+                                             <option value="Separated">Separated</option>
+		                                    </select>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Contact Number</label>
+                                        <input name="contactnum"  class="form-control"  placeholder="" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" pattern="[0-9]{10}" required="">
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Nationality</label>
+                                        <input type="text" class="form-control" name="nationality"  required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">House Number</label>
+                                        <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" name="houseno">
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Street</label>
+                                        <input type="text" class="form-control" name="street"   required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Barangay</label>
+                                        <input type="text" class="form-control" name="barangay"   required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">City</label>
+                                        <input type="text" class="form-control" name="city"  required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Province</label>
+                                        <input type="text" class="form-control" name="province"  required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">ZIP Code</label>
+                                        <input name="zipcode"  class="form-control"  type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" pattern="[0-9]{4}" required="">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                    <button type="submit" name="addres" class="btn btn-success">Add Resident</button>
+                                </div>
+                            </form>
                         </div>
-
-                       
                     </div>
+                </div>                
 
-                
+                <!-- Edit Modal HTML -->
+                <div id="editResidentsModal" class="modal fade" data-backdrop="false">
+                    <div class="modal-dialog  modal-dialog-centered">
+                        <div class="modal-content">
+                            <form action="actioncode.php" method="POST">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Edit Residents</h4>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                <input type="hidden" name="edit_id" id="edit_id">
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">First Name</label>
+                                        <input type="text" class="form-control" name="first_name" id="first_name" required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Middle Name</label>
+                                        <input type="text" class="form-control" name="middle_name" id="middle_name" required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Last Name</label>
+                                        <input type="text" class="form-control" name="last_name" id="last_name" required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Gender</label>
+                                        <select class="form-control" name="gender" id="gender" required="">
+		                                     <option disabled selected value="">-- select a gender --</option>
+		                                     <option value="Male">Male</option>
+		                                     <option value="Female">Female</option>
+		                                    </select>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Age</label>
+                                        <input name="age" id="age" class="form-control"  placeholder="" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  required="">
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Birthdate</label>
+                                        <input type="date" class="form-control" name="birthdate" id="birthdate" required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Religion</label>
+                                        <input type="text" class="form-control" name="religion" id="religion" required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Marital Status</label>
+                                        <select class="form-control" name="marital_status" id="marital_status" required="">
+		                                     <option disabled selected value="">-- select a marital status --</option>
+		                                     <option value="Single">Single</option>
+		                                     <option value="Married">Married</option>
+                                             <option value="Divorced">Divorced</option>
+                                             <option value="Separated">Separated</option>
+		                                    </select>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Contact Number</label>
+                                        <input name="contactnum" id="contactnum" class="form-control"  placeholder="" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" pattern="[0-9]{10}" required="">
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Nationality</label>
+                                        <input type="text" class="form-control" name="nationality" id="nationality"  required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Address</label>
+                                        <input type="text" class="form-control" name="address" id="address"  required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">City</label>
+                                        <input type="text" class="form-control" name="city" id="city" required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Province</label>
+                                        <input type="text" class="form-control" name="province" id="province" required>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">ZIP Code</label>
+                                        <input name="zipcode" id="zipcode" class="form-control"  type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" pattern="[0-9]{4}" required="">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                    <button type="submit" name="updateres" class="btn btn-success">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Delete Modal HTML -->
+                <div id="deleteResidents" class="modal fade" data-backdrop="false">
+                    <div class="modal-dialog  modal-dialog-centered">
+                        <div class="modal-content">
+                            <form action="actioncode.php" method="POST">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Delete Resident</h4>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" name="del_id" id="del_id">
+                                    <p>Are you sure you want to delete this record?</p>
+                                    <p class="text-warning"><small>This action cannot be undone!</small></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                    <button type="submit" name="deleteres" class="btn btn-danger">Delete</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
-
-            </div>
-
-            <!-- ============================================================== -->
-            <!-- End Page content -->
-            <!-- ============================================================== -->
-
-
+                <div id="deleteAll" class="modal fade" data-backdrop="false">
+                    <div class="modal-dialog  modal-dialog-centered">
+                        <div class="modal-content">
+                            <form action="actioncode.php" method="POST">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Delete Resident</h4>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" name="del_id" id="del_id">
+                                    <p>Are you sure you want to delete all records?</p>
+                                    <p class="text-warning"><small>This action cannot be undone!</small></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                    <button type="submit" name="deleteall" class="btn btn-danger">Delete</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                                <?php
+                                    } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e){
+                                        echo $e->getMessage();
+                                    }
+                                }
+                                else
+                                {
+                                    echo "<h5 id='disappMsg' class='alert alert-info'>"."NO ID FOUND"."</h5>";
+                                }
+                                ?>
         </div>
     </div>
 
                             
 </div>
+<script>
+    $(document).ready(function () {
+        $('.deletebtn').on('click', function(){
+        $tr = $(this).closest('tr');
+        var data = $tr.children("td").map(function() {
+            return $(this).text();
+        }).get();
+        console.log(data);
+        $('#del_id').val('<?=$key?>');
+    });
+    $('.editbtn').on('click', function(){
+        $tr = $(this).closest('tr');
+        var data = $tr.children("td").map(function() {
+            return $(this).text();
+        }).get();
+        console.log(data);
+        $('#edit_id').val('<?=$key?>');
+        $('#first_name').val(data[1]);
+        $('#middle_name').val(data[2]);
+        $('#last_name').val(data[3]);
+        $('#gender').val(data[4]);
+        $('#age').val(data[5]);
+        $('#birthdate').val(data[6]);
+        $('#religion').val(data[7]);
+        $('#marital_status').val(data[8]);
+        $('#contactnum').val(data[9]);
+        $('#nationality').val(data[10]);
+        $('#address').val(data[11]);
+        $('#city').val(data[12]);
+        $('#province').val(data[13]);
+        $('#zipcode').val(data[14]);
+    });
+});
+</script>
 <?php
 include('includes/profileoptions.php');
 ?>
