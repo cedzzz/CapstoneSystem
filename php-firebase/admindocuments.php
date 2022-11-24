@@ -241,7 +241,6 @@ include('includes/dashboard.php');
                                     <div class="form-group input-group permitcertificatetype" id = "otherspermit" style = "display:none;"> <label style= "text-align: left;">Others</label><input type = "text" class = "form-control" id= "othersinput" placeholder ="State the business type that you want a permit" name = "permitcertificate_type" disabled></div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Document</label>
-                                        <label style="text-align: left;">Photo/Video of the Incident</label>
                                         <input type = "file" name = "documents" id = "documents" class = "form-control" >
                                     </div>
                                     <div class="form-group input-group">

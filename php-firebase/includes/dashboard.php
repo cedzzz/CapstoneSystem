@@ -77,16 +77,16 @@ window.location.href = 'logout.php';
                             <ul class="side-nav-second-level">
                             <?php $claims = $auth->getUser($uid)->customClaims; if(isset($claims['admin']) == true):?>
                                 <li>
-                                    <a href="#" >Analytics</a>
-                                </li>
-                                <li>
                                     <a href="users.php?id=<?=$user->uid;?>">Manage Users</a>
                                 </li>
                                 <li>
-                                    <a href="#">Manage Blotters</a>
+                                    <a href="adminblotter.php?id=<?=$user->uid;?>">Manage Blotters</a>
                                 </li>
                                 <li>
-                                    <a href="#">Manage Documents</a>
+                                    <a href="admindocuments.php?id=<?=$user->uid;?>">Manage Documents</a>
+                                </li>
+                                <li>
+                                    <a href="adminresidents.php?id=<?=$user->uid;?>">Manage Residents</a>
                                 </li>
                             <?php else : ?>
                                 <li>
