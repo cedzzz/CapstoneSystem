@@ -51,7 +51,8 @@ include('includes/dashboard.php');
                                         <th>Marital Status</th>
                                         <th>Contact Number</th>
                                         <th>Nationality</th>
-                                        <th>Address</th>
+                                        <th>House Number And Street</th>
+                                        <th>Barangay</th>
                                         <th>City</th>
                                         <th>Province</th>
                                         <th>ZIP Code</th>   
@@ -83,7 +84,8 @@ include('includes/dashboard.php');
                                         <td><?=$row['maritalstatus'];?></td>
                                         <td><?=$row['contactnum'];?></td>
                                         <td><?=$row['nationality'];?></td>
-                                        <td><?=$row['address'];?></td>
+                                        <td><?=$row['housenostreet'];?></td>
+                                        <td><?=$row['barangay'];?></td>
                                         <td><?=$row['city'];?></td>
                                         <td><?=$row['province'];?></td>
                                         <td><?=$row['zipcode'];?></td>
@@ -140,17 +142,21 @@ include('includes/dashboard.php');
 		                                    </select>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Age</label>
-                                        <input name="age" class="form-control"  placeholder="" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  required="">
-                                    </div>
-                                    <div class="form-group input-group">
                                         <label style="text-align: left;">Birthdate</label>
                                         <input type="date" class="form-control" name="birthdate" required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Religion</label>
-                                        <input type="text" class="form-control" name="religion"  required>
+                                        <select class="form-control" name="religion"  required="">
+		                                     <option disabled selected value="">-- select a religion --</option>
+		                                     <option value="Catholic">Roman Catholic</option>
+		                                     <option value="Iglesia">Iglesia Ni Kristo</option>
+                                             <option value="Jehovah">Jehovah's Witnesses</option>
+                                             <option value="Islam">Islam</option>
+                                             <option value="Aglipayan">Aglipayan</option>
+		                                    </select>
                                     </div>
+
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Marital Status</label>
                                         <select class="form-control" name="marital_status"  required="">
@@ -170,29 +176,10 @@ include('includes/dashboard.php');
                                         <input type="text" class="form-control" name="nationality"  required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">House Number</label>
-                                        <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" name="houseno">
+                                        <label style="text-align: left;">House Number And Street</label>
+                                        <input type="text" class="form-control" name="housenostreet"   required>
                                     </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Street</label>
-                                        <input type="text" class="form-control" name="street"   required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Barangay</label>
-                                        <input type="text" class="form-control" name="barangay"   required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">City</label>
-                                        <input type="text" class="form-control" name="city"  required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Province</label>
-                                        <input type="text" class="form-control" name="province"  required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">ZIP Code</label>
-                                        <input name="zipcode"  class="form-control"  type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" pattern="[0-9]{4}" required="">
-                                    </div>
+                                    
                                 </div>
                                 <div class="modal-footer">
                                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -236,16 +223,19 @@ include('includes/dashboard.php');
 		                                    </select>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Age</label>
-                                        <input name="age" id="age" class="form-control"  placeholder="" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  required="">
-                                    </div>
-                                    <div class="form-group input-group">
                                         <label style="text-align: left;">Birthdate</label>
                                         <input type="date" class="form-control" name="birthdate" id="birthdate" required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Religion</label>
-                                        <input type="text" class="form-control" name="religion" id="religion" required>
+                                        <select class="form-control" name="religion"  required="">
+		                                     <option disabled selected value="">-- select a religion --</option>
+		                                     <option value="Catholic">Roman Catholic</option>
+		                                     <option value="Iglesia">Iglesia Ni Kristo</option>
+                                             <option value="Jehovah">Jehovah's Witnesses</option>
+                                             <option value="Islam">Islam</option>
+                                             <option value="Aglipayan">Aglipayan</option>
+		                                    </select>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Marital Status</label>
@@ -266,21 +256,10 @@ include('includes/dashboard.php');
                                         <input type="text" class="form-control" name="nationality" id="nationality"  required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Address</label>
-                                        <input type="text" class="form-control" name="address" id="address"  required>
+                                        <label style="text-align: left;">House Number And Street</label>
+                                        <input type="text" class="form-control" name="housenostreet" id="housenostreet"  required>
                                     </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">City</label>
-                                        <input type="text" class="form-control" name="city" id="city" required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Province</label>
-                                        <input type="text" class="form-control" name="province" id="province" required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">ZIP Code</label>
-                                        <input name="zipcode" id="zipcode" class="form-control"  type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" pattern="[0-9]{4}" required="">
-                                    </div>
+                                   
                                 </div>
                                 <div class="modal-footer">
                                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -290,6 +269,7 @@ include('includes/dashboard.php');
                         </div>
                     </div>
                 </div>
+
                 <!-- Delete Modal HTML -->
                 <div id="deleteResidents" class="modal fade" data-backdrop="false">
                     <div class="modal-dialog  modal-dialog-centered">
@@ -372,16 +352,12 @@ include('includes/dashboard.php');
         $('#middle_name').val(data[2]);
         $('#last_name').val(data[3]);
         $('#gender').val(data[4]);
-        $('#age').val(data[5]);
         $('#birthdate').val(data[6]);
         $('#religion').val(data[7]);
         $('#marital_status').val(data[8]);
         $('#contactnum').val(data[9]);
         $('#nationality').val(data[10]);
-        $('#address').val(data[11]);
-        $('#city').val(data[12]);
-        $('#province').val(data[13]);
-        $('#zipcode').val(data[14]);
+        $('#housenostreet').val(data[11]);
     });
 });
 </script>

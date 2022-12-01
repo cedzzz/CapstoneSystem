@@ -2,6 +2,12 @@
 session_start();
 include('dbcon.php');
 
+
+
+
+
+
+
 if(isset($_POST['updateres'])){
     $uid = $_SESSION['verified_user_id'];
     $edit_id = $_POST['edit_id'];
@@ -14,16 +20,15 @@ if(isset($_POST['updateres'])){
     $middlename = $_POST['middle_name'];
     $lastname = $_POST['last_name'];
     $gender = $_POST['gender'];
-    $age = $_POST['age'];
     $birthdate = $_POST['birthdate'];
     $religion = $_POST['religion'];
     $maritalstatus = $_POST['marital_status'];
     $contactnum = $_POST['contactnum'];
     $nationality = $_POST['nationality'];
-    $city = $_POST['city'];
-    $province = $_POST['province'];
-    $zipcode = $_POST['zipcode'];
-    $address = $_POST['address'];
+    $housenostreet = $_POST['housenostreet'];
+    $dob = new DateTime($birthdate);
+    $today = new DateTime('today');
+    $age = $dob->diff($today)->y;
 
 
 
@@ -38,10 +43,7 @@ if(isset($_POST['updateres'])){
         'contactnum'=>$contactnum,
         'nationality'=>$nationality,
         'maritalstatus'=>$maritalstatus,
-        'address'=>$address,
-        'city'=>$city,
-        'province'=>$province,
-        'zipcode'=>$zipcode,
+        'housenostreet'=>$housenostreet,
         'uid' =>$uid,
     ];
     $updatequery = $database->getReference($ref_table)->getChild($edituid)->update($updateData);
@@ -418,17 +420,15 @@ if(isset($_POST['updateres'])){
                     $middlename = $_POST['middle_name'];
                     $lastname = $_POST['last_name'];
                     $gender = $_POST['gender'];
-                    $age = $_POST['age'];
                     $birthdate = $_POST['birthdate'];
                     $religion = $_POST['religion'];
                     $maritalstatus = $_POST['marital_status'];
                     $contactnum = $_POST['contactnum'];
                     $nationality = $_POST['nationality'];
-                    $city = $_POST['city'];
-                    $province = $_POST['province'];
-                    $zipcode = $_POST['zipcode'];
-                    $address = $_POST['address'];
-                
+                    $housenostreet = $_POST['housenostreet'];
+                    $dob = new DateTime($birthdate);
+                    $today = new DateTime('today');
+                    $age = $dob->diff($today)->y;
                 
                 
                     $updateData = [
@@ -442,10 +442,7 @@ if(isset($_POST['updateres'])){
                         'contactnum'=>$contactnum,
                         'nationality'=>$nationality,
                         'maritalstatus'=>$maritalstatus,
-                        'address'=>$address,
-                        'city'=>$city,
-                        'province'=>$province,
-                        'zipcode'=>$zipcode,
+                        'housenostreet'=>$housenostreet,
                     ];
 
                     $updatequery = $database->getReference($ref_table)->getChild($edituid)->update($updateData);
@@ -762,8 +759,6 @@ if(isset($_POST['regisuser']))
     ];
     
     $createdUser = $auth->createUser($userProperties);
-    //$ref_table = "users";
-    //$postRef_result = $database->getReference($ref_table)->push($userProperties);
 
     if($createdUser)
     {
@@ -874,19 +869,19 @@ if(isset($_POST['addres'])){
     $middlename = $_POST['middle_name'];
     $lastname = $_POST['last_name'];
     $gender = $_POST['gender'];
-    $age = $_POST['age'];
     $birthdate = $_POST['birthdate'];
     $religion = $_POST['religion'];
     $maritalstatus = $_POST['marital_status'];
     $contactnum = $_POST['contactnum'];
     $nationality = $_POST['nationality'];
-    $houseno = $_POST['houseno'];
-    $street = $_POST['street'];
-    $barangay = $_POST['barangay'];
-    $city = $_POST['city'];
-    $province = $_POST['province'];
-    $zipcode = $_POST['zipcode'];
-    $address = $_POST['houseno']. ' ' .$_POST['street']. ' , ' .$_POST['barangay'];
+    $housenostreet = $_POST['housenostreet'];
+    $barangay = 'Barangay Santol';
+    $city = 'Quezon City';
+    $province = 'Metro Manila';
+    $zipcode = 1113;
+    $dob = new DateTime($birthdate);
+    $today = new DateTime('today');
+    $age = $dob->diff($today)->y;
 
 
 
@@ -901,7 +896,8 @@ if(isset($_POST['addres'])){
         'contactnum'=>$contactnum,
         'nationality'=>$nationality,
         'maritalstatus'=>$maritalstatus,
-        'address'=>$address,
+        'housenostreet'=>$housenostreet,
+        'barangay'=>$barangay,
         'city'=>$city,
         'province'=>$province,
         'zipcode'=>$zipcode,
@@ -1088,19 +1084,19 @@ if(isset($_POST['adminaddres'])){
     $middlename = $_POST['middle_name'];
     $lastname = $_POST['last_name'];
     $gender = $_POST['gender'];
-    $age = $_POST['age'];
     $birthdate = $_POST['birthdate'];
     $religion = $_POST['religion'];
     $maritalstatus = $_POST['marital_status'];
     $contactnum = $_POST['contactnum'];
     $nationality = $_POST['nationality'];
-    $houseno = $_POST['houseno'];
-    $street = $_POST['street'];
-    $barangay = $_POST['barangay'];
-    $city = $_POST['city'];
-    $province = $_POST['province'];
-    $zipcode = $_POST['zipcode'];
-    $address = $_POST['houseno']. ' ' .$_POST['street']. ' , ' .$_POST['barangay'];
+    $housenostreet = $_POST['housenostreet'];
+    $barangay = 'Barangay Santol';
+    $city = 'Quezon City';
+    $province = 'Metro Manila';
+    $zipcode = 1113;
+    $dob = new DateTime($birthdate);
+    $today = new DateTime('today');
+    $age = $dob->diff($today)->y;
 
 
 
@@ -1115,7 +1111,8 @@ if(isset($_POST['adminaddres'])){
         'contactnum'=>$contactnum,
         'nationality'=>$nationality,
         'maritalstatus'=>$maritalstatus,
-        'address'=>$address,
+        'housenostreet'=>$housenostreet,
+        'barangay'=>$barangay,
         'city'=>$city,
         'province'=>$province,
         'zipcode'=>$zipcode,
@@ -1140,41 +1137,41 @@ if(isset($_POST['adminaddres'])){
 
 
 
-
-
 if(isset($_POST['btn_login']))
 {
-$email = $_POST['email'];
-$clearTextPassword = $_POST['password'];
-try{
-    $user = $auth->getUserByEmail("$email");
-  try{
-    $signInResult = $auth->signInWithEmailAndPassword($email, $clearTextPassword);
-    $idTokenString = $signInResult->idToken(); 
+    $email = $_POST['email'];
+    $clearTextPassword = $_POST['password'];
 
- 
-try {
-    $verifiedIdToken = $auth->verifyIdToken($idTokenString);
+    try {
+        $signInResult = $auth->signInWithEmailAndPassword($email, $clearTextPassword);
+    } catch (\Kreait\Firebase\Auth\SignIn\FailedToSignIn $e) {
+        $_SESSION['statusred'] = "Invalid Email or Password!";
+        header('Location: login.php');
+        exit();
+    }
+
+    $idTokenString = $signInResult->idToken();
+
+    if ($idTokenString === null) {
+        echo "User signed in, but ID Token is empty"; exit;
+    }
+
+    try {
+        $verifiedIdToken = $auth->verifyIdToken($idTokenString);
+        
+    } catch (\Kreait\Firebase\Exception\Auth\FailedToVerifyToken $e) {
+        echo $e->getMessage(); exit;
+    }
     $uid = $verifiedIdToken->claims()->get('sub');
     $_SESSION['verified_user_id'] = $uid;
     $_SESSION['idTokenString'] = $idTokenString;
     $_SESSION['status'] = "Logged in successfully!";
     header('Location: index.php');
     exit();
-} catch (FailedToVerifyToken $e) {
-    echo 'The token is invalid: '.$e->getMessage();
 }
-  } catch (Exception $e){
-    $_SESSION['statusred'] = "Invalid Email or Password!";
-    header('Location: login.php');
-    exit();
-  }
-} catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
-    $_SESSION['statusred'] = "Invalid Email or Password!";
-    header('Location: login.php');
-    exit();
-}
-}
+
+
+
 
 if(isset($_POST['btn_reset']))
 {

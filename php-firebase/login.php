@@ -64,7 +64,7 @@ if(isset($_SESSION['verified_user_id']))
             </div>
             <h5>&nbsp;Password</h5>
             <div class="form-group mb-3 input-group">
-              <input type="password" id="password" class="form-control" style="border-radius:0px" name="password" placeholder="Enter Password" required="">
+              <input type="password" id="password" name="password" class="form-control" style="border-radius:0px"  placeholder="Enter Password" required="">
               <span class="input-group-text"><i class="bi bi-eye-slash" id="togglePassword"></i></span>
 
 
