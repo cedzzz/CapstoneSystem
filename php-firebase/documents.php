@@ -51,6 +51,9 @@ include('includes/dashboard.php');
                                         <th>Religion</th>
                                         <th>Marital Status</th>
                                         <th>Nationality</th>
+                                        <th>House Number And Street</th>
+                                        <th>Barangay</th>
+                                        <th>City</th>
                                         <th>Type of Document</th>
                                         <th>Type of Permit/Certificate</th>
                                         <th>PDF Document</th>
@@ -82,6 +85,9 @@ include('includes/dashboard.php');
                                         <td><?=$row['religion'];?></td>
                                         <td><?=$row['maritalstatus'];?></td>
                                         <td><?=$row['nationality'];?></td>
+                                        <td><?=$row['housenostreet'];?></td>
+                                        <td><?=$row['barangay'];?></td>
+                                        <td><?=$row['city'];?></td>
                                         <td><?=$row['documenttype'];?></td>
                                         <td><?=$row['permitcertificatetype'];?></td>
                                         <td style= "display: none;"><?=$row['documents'];?></td>
@@ -91,16 +97,6 @@ include('includes/dashboard.php');
                                             <a href="#deleteDocuments" style= "color: red;" class="delete deletebtn" data-toggle="modal"><i
                                                     class="material-icons" data-toggle="tooltip"
                                                     title="Delete" value="<?=$key?>">&#xE872;</i></a>
-                                        </td>
-                                        <td>
-                                            <a href="#viewPDFModal" style= "color: blue;" class="view viewbtn" data-toggle="modal"><i
-                                                    class="material-icons" data-toggle="tooltip"
-                                                    title="View" value="<?=$key?>">&#xf1c5;</i></a>
-                                        </td>
-                                        <td>
-                                            <a href="#generateQR" style= "color: blue;" class="qrcode qrcodebtn" data-toggle="modal"><i
-                                                    class="material-icons" data-toggle="tooltip"
-                                                    title="QR" value="<?=$key?>">&#xef6b;</i></a>
                                         </td>
                                         
                                     </tr>
@@ -125,37 +121,40 @@ include('includes/dashboard.php');
                                         aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="form-group input-group">
+                                <div class="form-group input-group">
                                         <label style="text-align: left;">First Name</label>
-                                        <input type="text" class="form-control" name="first_name"  required>
+                                        <input type="text" class="form-control" placeholder="Juan" title="Enter the first name of the resident" name="first_name"  required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Middle Name</label>
-                                        <input type="text" class="form-control" name="middle_name"  required>
+                                        <input type="text" class="form-control" name="middle_name" title="Enter the middle name of the resident" placeholder="Ruiz"  required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Last Name</label>
-                                        <input type="text" class="form-control" name="last_name" required>
+                                        <input type="text" class="form-control" name="last_name" title="Enter the last name of the resident" placeholder="Dela Cruz" required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Gender</label>
-                                        <select class="form-control" name="gender" required="">
+                                        <select class="form-control" name="gender" title="Select the gender of the resident from the list" required="">
 		                                     <option disabled selected value="">-- select a gender --</option>
 		                                     <option value="Male">Male</option>
 		                                     <option value="Female">Female</option>
 		                                    </select>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Age</label>
-                                        <input name="age" class="form-control"  placeholder="" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  required="">
-                                    </div>
-                                    <div class="form-group input-group">
                                         <label style="text-align: left;">Birthdate</label>
-                                        <input type="date" name="birthdate" class="form-control" required>
+                                        <input type="date" class="form-control" title="MM/DD/YYYY" name="birthdate" required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Religion</label>
-                                        <input type="text" class="form-control" name="religion">
+                                        <select class="form-control" name="religion" title="Select the religion of the resident from the list"  required="">
+		                                     <option disabled selected value="">-- select a religion --</option>
+		                                     <option value="Roman Catholic">Roman Catholic</option>
+		                                     <option value="Iglesia Ni Kristo">Iglesia Ni Kristo</option>
+                                             <option value="Jehovah's Witness">Jehovah's Witness</option>
+                                             <option value="Islam">Islam</option>
+                                             <option value="Aglipayan">Aglipayan</option>
+		                                    </select>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Marital Status</label>
@@ -169,11 +168,21 @@ include('includes/dashboard.php');
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Nationality</label>
-                                        <input type="text" class="form-control" name="nationality"  required>
+                                        <select class="form-control" name="nationality" title="Select the nationality of the resident from the list" required="">
+		                                     <option disabled selected value="">-- select a nationality --</option>
+		                                     <option value="Filipino">Filipino</option>
+		                                     <option value="Non-Filipino">Non-Filipino</option>
+		                                    </select>
                                     </div>
+
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">House Number And Street</label>
+                                        <input type="text" class="form-control" title="Enter the house number and street of the resident" placeholder="80 Conception Street" name="housenostreet"   required>
+                                    </div>
+
                                     <div class="form-group input-group">
                                     <label style="text-align: left;">Type of Document</label>
-                                    <select class="form-control" name="document_type" id="document_type" required="" onchange='toggleDropdown(this);'>
+                                    <select class="form-control" name="document_type" id="document_type" title="Select the type of document to be requested" required="" onchange='toggleDropdown(this);'>
 		                                     <option disabled selected value="">-- select a document to be requested --</option>
 		                                     <option value="Barangay Business Permit">Barangay Business Permit</option>
 		                                     <option value="Barangay Permit">Barangay Permit</option>
@@ -181,7 +190,7 @@ include('includes/dashboard.php');
                                              <option value="Barangay Working Permit">Barangay Working Permit</option>
 		                                    </select>
 
-                                            <select class="form-control" name="permitcertificate_type" id="businesspermit_type" style="display:none;" onchange = 'otherToggle(this)'>
+                                            <select class="form-control" name="permitcertificate_type" id="businesspermit_type" title="Select the business permit type to be requested" style="display:none;" onchange = 'otherToggle(this)'>
 		                                     <option disabled selected value="">-- select a business permit type to be requested --</option>
 		                                     <option value="Sari-Sari Store">Sari-Sari Store</option>
 		                                     <option value="Liquor">Liquor Permit</option>
@@ -195,7 +204,7 @@ include('includes/dashboard.php');
 		                                    </select>
                                             
 
-                                            <select class="form-control" name="permitcertificate_type" id="barangaypermit_type" style="display:none;">
+                                            <select class="form-control" name="permitcertificate_type" id="barangaypermit_type" title="Select the barangay permit type to be requested" style="display:none;">
 		                                     <option disabled selected value="">-- select a permit type to be requested --</option>
 		                                     <option value="Cable Wire Installation">For Cable and Wire Installation</option>
 		                                     <option value="Excavation">For Excavation (Digging of Hole)</option>
@@ -206,7 +215,7 @@ include('includes/dashboard.php');
                                              <option value="Telcom Tower">For Telecommunication Tower</option>
 		                                    </select>
 
-                                            <select class="form-control" name="permitcertificate_type" id="barangaycertificate_type" style="display:none;">
+                                            <select class="form-control" name="permitcertificate_type" id="barangaycertificate_type" title="Select the barangay certificate type to be requested" style="display:none;">
 		                                     <option disabled selected value="">-- select the purpose of the certificate to be requested --</option>
 		                                     <option value="Residency ID">Residency/Identification</option>
 		                                     <option value="Local Employment">Local Employment</option>
@@ -229,7 +238,7 @@ include('includes/dashboard.php');
 		                                    </select>
 
                                     </div>
-                                         <div class="form-group input-group" id = "otherspermit" style = "display:none;"> <label style= "text-align: left;">Others</label><input type = "text" class = "form-control" id= "othersinput" placeholder ="State the business type that you want a permit" name = "permitcertificate_type" disabled></div>
+                                         <div class="form-group input-group" id = "otherspermit" style = "display:none;"> <label style= "text-align: left;">Others</label><input type = "text" class = "form-control" id= "othersinput" title="State the business type that you want a permit" placeholder ="State the business type that you want a permit" name = "permitcertificate_type" disabled></div>
                                 </div>
                                 <div class="modal-footer">
                                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -241,55 +250,6 @@ include('includes/dashboard.php');
                 </div>                
 
 
-                <div id="viewPDFModal" class="modal fade" data-backdrop="false">
-                    <div class="modal-dialog modal-xl modal-dialog-centered" style="width: 1000px;">
-                        <div class="modal-content">
-                            <form action="actioncode.php" method="POST" enctype="multipart/form-data">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">View PDF</h4>
-                                    <button type="button" class="close" data-dismiss="modal"
-                                        aria-hidden="true">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                <input type="hidden" name="view_id" id="view_id">
-                                <div class="form-group input-group">
-                                        <label style="text-align: left;">Your Document In PDF</label>
-                                        <embed type="application/pdf" id="documentpdf" width="100%" height="300px" />
-                                    </div>
-                                    
-                                </div>
-                                <div class="modal-footer">
-                                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="OK">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="generateQR" class="modal fade" data-backdrop="false">
-                    <div class="modal-dialog modal-xl modal-dialog-centered" style="width: 1000px;">
-                        <div class="modal-content">
-                            <form action="actioncode.php" method="POST" enctype="multipart/form-data">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Generate QR Code</h4>
-                                    <button type="button" class="close" data-dismiss="modal"
-                                        aria-hidden="true">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                <input type="hidden" name="qr_id" id="qr_id">
-                                <div class="form-group input-group">
-                                        <label style="text-align: left;">Your QR Code</label>
-                                        <img src="" id="qrdocu" width="100%" height="100%" />
-                                    </div>
-                                    
-                                </div>
-                                <div class="modal-footer">
-                                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="OK">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Delete Modal HTML -->
                 <div id="deleteDocuments" class="modal fade" data-backdrop="false">
@@ -362,29 +322,7 @@ include('includes/dashboard.php');
         console.log(data);
         $('#del_id').val('<?=$key?>');
     });
-    $('.viewbtn').on('click', function(){
-        $tr = $(this).closest('tr');
-        var data = $tr.children("td").map(function() {
-            return $(this).text();
-        }).get();
-        console.log(data);
-        $('#view_id').val('<?=$key?>');
-        var storedata = data[12];
-        var pdf = document.getElementById('documentpdf');
-        pdf.setAttribute('src', storedata+'#toolbar=0&navpanes=0&scrollbar=0');
-        pdf.contentDocument.location.reload();
 
-    });
-
-    $('.qrcodebtn').on('click', function(){
-        $tr = $(this).closest('tr');
-        var data = $tr.children("td").map(function() {
-            return $(this).text();
-        }).get();
-        console.log(data);
-        var qr = document.getElementById('qrdocu');
-        qr.src = "https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl="+data[12];
-    });
 });
 </script>
 <script>

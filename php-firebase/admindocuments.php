@@ -25,9 +25,9 @@ include('includes/dashboard.php');
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <h2>Manage <b>User Blotters</b></h2>
+                                        <h2>Manage <b>User Documents</b></h2>
                                         <a href="#deleteAll" class="btn btn-danger" data-toggle="modal"><i
-                                                class="material-icons">&#xE15C;</i> <span>Delete All Blotters</span></a>
+                                                class="material-icons">&#xE15C;</i> <span>Delete All Documents</span></a>
                                                 <br>
                             <br>
                                     </div>
@@ -49,10 +49,13 @@ include('includes/dashboard.php');
                                         <th>Religion</th>
                                         <th>Marital Status</th>
                                         <th>Nationality</th>
+                                        <th>House Number And Street</th>
+                                        <th>Barangay</th>
+                                        <th>City</th>
                                         <th>Type of Document</th>
                                         <th>Type of Permit/Certificate</th>
-                                        <th>PDF Document</th>
                                         <th>Status</th>
+                                        <th></th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -84,31 +87,29 @@ include('includes/dashboard.php');
                                         <td><?=$row['religion'];?></td>
                                         <td><?=$row['maritalstatus'];?></td>
                                         <td><?=$row['nationality'];?></td>
+                                        <td><?=$row['housenostreet'];?></td>
+                                        <td><?=$row['barangay'];?></td>
+                                        <td><?=$row['city'];?></td>
                                         <td><?=$row['documenttype'];?></td>
                                         <td><?=$row['permitcertificatetype'];?></td>
                                         <td style= "display: none;"><?=$row['documents'];?></td>
-                                        <td><a href="<?=$row['documents'];?>" download="<?=$row['firstname'].' '.$row['lastname'].$row['documenttype'];?>" class = "btn btn-success btn-sm">Download</a></td>
+                                        <td style= "display: none;"><a href="<?=$row['documents'];?>" download="<?=$row['firstname'].' '.$row['lastname'].$row['documenttype'];?>" class = "btn btn-success btn-sm">Download</a></td>
                                         <td><?=$row['status'];?></td>
                                         <td style= "display: none;"><?=$fetchkey?></td>
                                         <td>
-                                            <a href="#editDocumentsModal" class="edit editbtn" data-toggle="modal"><i
-                                                    class="material-icons" style= "color: #FFDF00;" data-toggle="tooltip"
-                                                    title="Edit">&#xE254;</i> </a>
+                                            <a href="#approveDocumentsModal" class="edit approvebtn" data-toggle="modal"><i
+                                                    class="material-icons" style= "color: #00FF00;" data-toggle="tooltip"
+                                                    title="Approve">&#xE876;</i> </a>
+                                        </td>
+                                        <td>
+                                            <a href="#rejectDocumentsModal" style= "color: red;" class="edit rejectbtn" data-toggle="modal"><i
+                                                    class="material-icons" data-toggle="tooltip"
+                                                    title="Reject">&#xE14B;</i></a>
                                         </td>
                                         <td>
                                             <a href="#deleteDocuments" style= "color: red;" class="delete deletebtn" data-toggle="modal"><i
                                                     class="material-icons" data-toggle="tooltip"
                                                     title="Delete">&#xE872;</i></a>
-                                        </td>
-                                        <td>
-                                            <a href="#viewPDFModal" style= "color: blue;" class="view viewpdfbtn" data-toggle="modal"><i
-                                                    class="material-icons" data-toggle="tooltip"
-                                                    title="View" value="<?=$key?>">&#xf1c5;</i></a>
-                                        </td>
-                                        <td>
-                                            <a href="#generateQR" style= "color: blue;" class="qrcode qrcodebtn" data-toggle="modal"><i
-                                                    class="material-icons" data-toggle="tooltip"
-                                                    title="QR" value="<?=$key?>">&#xef6b;</i></a>
                                         </td>
                                     </tr>
                                     <?php
@@ -121,75 +122,80 @@ include('includes/dashboard.php');
                                                             echo "<h5 id='disappMsg' class='alert alert-danger'>"."NO RECORDS FOUND!"."</h5>";
                                                         }
                                                     ?>           
-     <!-- Edit Modal HTML -->
-     <div id="editDocumentsModal" class="modal fade" data-backdrop="false">
+
+
+                <div id="approveDocumentsModal" class="modal fade" data-backdrop="false">
                     <div class="modal-dialog  modal-dialog-centered">
                         <div class="modal-content">
                             <form action="actioncode.php" method="POST" enctype="multipart/form-data">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Edit Blotter</h4>
+                                    <h4 class="modal-title">Approve Request</h4>
                                     <button type="button" class="close" data-dismiss="modal"
                                         aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
                                 <input type="hidden" name="edit_id" id="edit_id">
                                 <input type="hidden" name="edit_uid" id="edit_uid">
-                                
-                                    
+                                <input type="hidden" name="first_name" id="first_name">
+                                <input type="hidden" name="middle_name" id="middle_name">
+                                <input type="hidden" name="last_name" id="last_name">
+                                <input type="hidden" name="gender" id="gender">
+                                <input type="hidden" name="age" id="age">
+                                <input type="hidden" name="birthdate" id="birthdate">
+                                <input type="hidden" name="marital_status" id="marital_status">
+                                <input type="hidden" name="nationality" id="nationality">
+                                <input type="hidden" name="housenostreet" id="housenostreet">
+                                <input type="hidden" name="barangay" id="barangay">
+                                <input type="hidden" name="city" id="city">
+                                <input type="hidden" name="document_type" id="document_type">
+                                <input type="hidden" name="permitcertificate_type" id="permitcertificatetype">
+                                <input type="hidden" name="religion" id="religion">
+                                <input type="hidden" name="status" id="documentstatus">
+                                <p>Are you sure you want to approve this document request?</p>
+                                <p class="text-warning"><small>This action cannot be undone!</small></p>   
                                 </div>
                                 <div class="modal-footer">
                                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                    <button type="submit" name="updateadmindocu" class="btn btn-success">Save</button>
+                                    <button type="submit" name="approveadmindocu" class="btn btn-success">Approve</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
 
-                <div id="generateQR" class="modal fade" data-backdrop="false">
-                    <div class="modal-dialog modal-xl modal-dialog-centered" style="width: 1000px;">
+                <div id="rejectDocumentsModal" class="modal fade" data-backdrop="false">
+                    <div class="modal-dialog  modal-dialog-centered">
                         <div class="modal-content">
                             <form action="actioncode.php" method="POST" enctype="multipart/form-data">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Generate QR Code</h4>
+                                    <h4 class="modal-title">Reject Request</h4>
                                     <button type="button" class="close" data-dismiss="modal"
                                         aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
-                                <input type="hidden" name="qr_id" id="qr_id">
-                                <div class="form-group input-group">
-                                        <label style="text-align: left;">Your QR Code</label>
-                                        <img src="" id="qrdocu" width="100%" height="100%" />
-                                    </div>
-                                    
+                                <input type="hidden" name="reject_id" id="reject_id">
+                                <input type="hidden" name="reject_uid" id="reject_uid">
+                                <input type="hidden" name="first_name" id="rejectfirst_name">
+                                <input type="hidden" name="middle_name" id="rejectmiddle_name">
+                                <input type="hidden" name="last_name" id="rejectlast_name">
+                                <input type="hidden" name="gender" id="rejectgender">
+                                <input type="hidden" name="age" id="rejectage">
+                                <input type="hidden" name="birthdate" id="rejectbirthdate">
+                                <input type="hidden" name="marital_status" id="rejectmarital_status">
+                                <input type="hidden" name="nationality" id="rejectnationality">
+                                <input type="hidden" name="housenostreet" id="rejecthousenostreet">
+                                <input type="hidden" name="barangay" id="rejectbarangay">
+                                <input type="hidden" name="city" id="rejectcity">
+                                <input type="hidden" name="document_type" id="rejectdocument_type">
+                                <input type="hidden" name="permitcertificate_type" id="rejectpermitcertificatetype">
+                                <input type="hidden" name="religion" id="rejectreligion">
+                                <input type="hidden" name="status" id="rejectdocumentstatus">
+                                <p>Are you sure you want to reject this document request?</p>
+                                <p class="text-warning"><small>This action cannot be undone!</small></p>    
                                 </div>
                                 <div class="modal-footer">
-                                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="OK">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="viewPDFModal" class="modal fade" data-backdrop="false">
-                    <div class="modal-dialog modal-xl modal-dialog-centered" style="width: 1000px;">
-                        <div class="modal-content">
-                            <form action="actioncode.php" method="POST" enctype="multipart/form-data">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">View PDF</h4>
-                                    <button type="button" class="close" data-dismiss="modal"
-                                        aria-hidden="true">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                <input type="hidden" name="view_id" id="view_id">
-                                <div class="form-group input-group">
-                                        <label style="text-align: left;">Your Document In PDF</label>
-                                        <embed type="application/pdf" id="documentpdf" width="100%" height="300px" />
-                                    </div>
-                                    
-                                </div>
-                                <div class="modal-footer">
-                                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="OK">
+                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                    <button type="submit" name="rejectadmindocu" class="btn btn-danger">Reject</button>
                                 </div>
                             </form>
                         </div>
@@ -267,16 +273,17 @@ include('includes/dashboard.php');
         }).get();
         console.log(data);
         $('#del_id').val('<?=$key?>');
-        $('#del_uid').val(data[15]);
+        $('#del_uid').val(data[18]);
     });
 
-    $('.editbtn').on('click', function(){
+    $('.approvebtn').on('click', function(){
         $tr = $(this).closest('tr');
         var data = $tr.children("td").map(function() {
             return $(this).text();
         }).get();
         console.log(data);
         $('#edit_id').val('<?=$key?>');
+        $('#edit_uid').val(data[18]);
         $('#first_name').val(data[1]);
         $('#middle_name').val(data[2]);
         $('#last_name').val(data[3]);
@@ -286,93 +293,43 @@ include('includes/dashboard.php');
         $('#religion').val(data[7]);
         $('#marital_status').val(data[8]);
         $('#nationality').val(data[9]);
-        $('#document_type').val(data[10]);
-        $('.permitcertificatetype').val(data[11]);
-        $('#documentstatus').val(data[14]);
-        $('#edit_uid').val(data[15]);
+        $('#housenostreet').val(data[10]);
+        $('#barangay').val(data[11]);
+        $('#city').val(data[12]);
+        $('#document_type').val(data[13]);
+        $('#permitcertificatetype').val(data[14]);
+        $('#documentstatus').val(data[17]);
         
     });
-    $('.viewpdfbtn').on('click', function(){
+
+    $('.rejectbtn').on('click', function(){
         $tr = $(this).closest('tr');
         var data = $tr.children("td").map(function() {
             return $(this).text();
         }).get();
         console.log(data);
-        var storedata = data[12];
-        var pdf = document.getElementById('documentpdf');
-        pdf.setAttribute('src', storedata+'#toolbar=0&navpanes=0&scrollbar=0');
-        pdf.contentDocument.location.reload();
+        $('#reject_id').val('<?=$key?>');
+        $('#reject_uid').val(data[18]);
+        $('#rejectfirst_name').val(data[1]);
+        $('#rejectmiddle_name').val(data[2]);
+        $('#rejectlast_name').val(data[3]);
+        $('#rejectgender').val(data[4]);
+        $('#rejectage').val(data[5]);
+        $('#rejectbirthdate').val(data[6]);
+        $('#rejectreligion').val(data[7]);
+        $('#rejectmarital_status').val(data[8]);
+        $('#rejectnationality').val(data[9]);
+        $('#rejecthousenostreet').val(data[10]);
+        $('#rejectbarangay').val(data[11]);
+        $('#rejectcity').val(data[12]);
+        $('#rejectdocument_type').val(data[13]);
+        $('#rejectpermitcertificatetype').val(data[14]);
+        $('#rejectdocumentstatus').val(data[17]);
 
-    });
-
-    $('.qrcodebtn').on('click', function(){
-        $tr = $(this).closest('tr');
-        var data = $tr.children("td").map(function() {
-            return $(this).text();
-        }).get();
-        console.log(data);
-        var qr = document.getElementById('qrdocu');
-        qr.src = "https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl="+data[12];
+        
     });
 
 });
-</script>
-<script>
-  function toggleDropdown(selObj) {
-                            if(selObj.value == "Barangay Business Permit")
-                            {
-                                document.getElementById("businesspermit_type").style.display = "";
-                                document.getElementById("barangaypermit_type").style.display = "none";
-                                document.getElementById("barangaycertificate_type").style.display = "none";
-                                document.getElementById("barangaypermit_type").selectedIndex = 0;
-                                document.getElementById("barangaycertificate_type").selectedIndex = 0;
-
-
-                            }
-                            else if (selObj.value == "Barangay Permit")
-                            {
-                                document.getElementById("businesspermit_type").style.display = "none";
-                                document.getElementById("barangaypermit_type").style.display = "";
-                                document.getElementById("barangaycertificate_type").style.display = "none";
-                                document.getElementById("businesspermit_type").selectedIndex = 0;
-                                document.getElementById("barangaycertificate_type").selectedIndex = 0;
-                                document.getElementById("otherspermit").style.display = "none";
-                            }
-                            else if (selObj.value == "Barangay Certificate")
-                            {
-                                document.getElementById("businesspermit_type").style.display = "none";
-                                document.getElementById("barangaypermit_type").style.display = "none";
-                                document.getElementById("barangaycertificate_type").style.display = "";
-                                document.getElementById("businesspermit_type").selectedIndex = 0;
-                                document.getElementById("barangaypermit_type").selectedIndex = 0;
-                                document.getElementById("otherspermit").style.display = "none";
-                            }
-                            else 
-                            {
-                                document.getElementById("businesspermit_type").style.display = "none";
-                                document.getElementById("barangaypermit_type").style.display = "none";
-                                document.getElementById("barangaycertificate_type").style.display = "none";
-                                document.getElementById("businesspermit_type").selectedIndex = 0;
-                                document.getElementById("barangaypermit_type").selectedIndex = 0;
-                                document.getElementById("barangaycertificate_type").selectedIndex = 0;
-                                document.getElementById("otherspermit").style.display = "none";
-
-                            }
-
-                        }
-                    function otherToggle(selectObj)
-                    {
-                        if(selectObj.value == "Others")
-                                {
-                                    document.getElementById("otherspermit").style.display = "";
-                                    document.getElementById("othersinput").disabled = false;
-                                }
-                                else
-                                {
-                                    document.getElementById("otherspermit").style.display = "none";
-                                    document.getElementById("othersinput").disabled = true;
-                                }
-                    }
 </script>
 <?php
 include('includes/profileoptions.php');

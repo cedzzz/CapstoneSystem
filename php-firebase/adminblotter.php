@@ -56,7 +56,7 @@ include('includes/dashboard.php');
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
+                                <?php
                                     include('dbcon.php');
                                     $uid = $_SESSION['verified_user_id'];
                                     $ref_table = "blotter";
@@ -67,13 +67,12 @@ include('includes/dashboard.php');
                                                         foreach($fetchdata as $fetchkey  => $keyrow)
                                                         {
                                                             $fetchchildren = $database->getReference($ref_table)->getChild($fetchkey)->getValue();
-                                                            foreach($fetchchildren as $key => $row)
-                                                            {
-                                                                
+                                                            foreach($fetchchildren as $key => $row){
+
                                                             
                                     ?>
                                     <tr>
-                                        <td><?=$x++;?></td>
+                                    <td><?=$x++;?></td>
                                         <td><?=$row['complainant_firstname'];?></td>
                                         <td><?=$row['complainant_middlename'];?></td>
                                         <td><?=$row['complainant_lastname'];?></td>
@@ -87,14 +86,19 @@ include('includes/dashboard.php');
                                         <td><?=$row['status'];?></td>
                                         <td style= "display: none;"><?=$fetchkey?></td>
                                         <td>
-                                            <a href="#editBlottersModal" class="edit editbtn" data-toggle="modal"><i
-                                                    class="material-icons" style= "color: #FFDF00;" data-toggle="tooltip"
-                                                    title="Edit">&#xE254;</i> </a>
+                                            <a href="#approveBlottersModal" class="edit approvebtn" data-toggle="modal"><i
+                                                    class="material-icons" style= "color: #00FF00;" data-toggle="tooltip"
+                                                    title="Approve">&#xE876;</i> </a>
+                                        </td>
+                                        <td>
+                                            <a href="#rejectBlottersModal" style= "color: red;" class="edit rejectbtn" data-toggle="modal"><i
+                                                    class="material-icons" data-toggle="tooltip"
+                                                    title="Reject">&#xE14B;</i></a>
                                         </td>
                                         <td>
                                             <a href="#deleteBlotters" style= "color: red;" class="delete deletebtn" data-toggle="modal"><i
                                                     class="material-icons" data-toggle="tooltip"
-                                                    title="Delete" value="<?=$key?>">&#xE872;</i></a>
+                                                    title="Delete">&#xE872;</i></a>
                                         </td>
                                     </tr>
                                     <?php
@@ -106,79 +110,79 @@ include('includes/dashboard.php');
 
                                                             echo "<h5 id='disappMsg' class='alert alert-danger'>"."NO RECORDS FOUND!"."</h5>";
                                                         }
-                                                    ?>           
+                                                    ?>               
 
-                <!-- Edit Modal HTML -->
-                <div id="editBlottersModal" class="modal fade" data-backdrop="false">
+                <div id="approveBlottersModal" class="modal fade" data-backdrop="false">
                     <div class="modal-dialog  modal-dialog-centered">
                         <div class="modal-content">
                             <form action="actioncode.php" method="POST" enctype="multipart/form-data">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Edit Blotter</h4>
+                                    <h4 class="modal-title">Approve Blotter</h4>
                                     <button type="button" class="close" data-dismiss="modal"
                                         aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
                                 <input type="hidden" name="edit_id" id="edit_id">
                                 <input type="hidden" name="edit_uid" id="edit_uid">
-                                <div class="form-group input-group">
-                                        <label style="text-align: left;">Complainant's First Name</label>
-                                        <input type="text" class="form-control" name="complainant_firstname" id="complainant_firstname"  required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Complainant's Middle Name</label>
-                                        <input type="text" class="form-control" name="complainant_middlename" id="complainant_middlename"  required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Complainant's Last Name</label>
-                                        <input type="text" class="form-control" name="complainant_lastname" id="complainant_lastname" required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Complainant's Address</label>
-                                        <input type="text" class="form-control" name="complainant_address" id="complainantaddress" required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Incident</label>
-                                        <textarea name="incident" id="incident" class="text" cols="30" rows ="5"></textarea>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Complainee's First Name</label>
-                                        <input type="text" class="form-control" name="complainee_firstname" id="complainee_firstname"  required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Complainee's Middle Name</label>
-                                        <input type="text" class="form-control" name="complainee_middlename" id="complainee_middlename"  required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Complainee's Last Name</label>
-                                        <input type="text" class="form-control" name="complainee_lastname" id="complainee_lastname" required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Complainee's Address</label>
-                                        <input type="text" class="form-control" name="complainee_address" id="complaineeaddress" required>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Photo/Video of the Incident</label>
-                                        <input type = "file" name = "blotter_evidence" id = "blotter_evidence" class = "form-control">
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <label style="text-align: left;">Status</label>
-                                        <select class="form-control" name="status" id="blotterstatus" required="">
-		                                     <option disabled selected value="">-- select the current status of the blotter --</option>
-		                                     <option value="Pending">Pending</option>
-		                                     <option value="Approved">Approved</option>
-                                             <option value="Rejected">Rejected</option>
-		                                    </select>
-                                    </div>
+                                <input type="hidden" name="complainant_firstname" id="complainant_firstname">
+                                <input type="hidden" name="complainant_middlename" id="complainant_middlename">
+                                <input type="hidden" name="complainant_lastname" id="complainant_lastname">
+                                <input type="hidden" name="complainantaddress" id="complainantaddress">
+                                <input type="hidden" name="incident" id="incident">
+                                <input type="hidden" name="complainee_firstname" id="complainee_firstname">
+                                <input type="hidden" name="complainee_middlename" id="complainee_middlename">
+                                <input type="hidden" name="complainee_lastname" id="complainee_lastname">
+                                <input type="hidden" name="complaineeaddress" id="complaineeaddress">
+                                <input type="hidden" name="incidentevidence" id="incidentevidence">
+                                <input type="hidden" name="status" id="documentstatus">
+                                <p>Are you sure you want to approve this blotter record?</p>
+                                <p class="text-warning"><small>This action cannot be undone!</small></p>
                                 </div>
                                 <div class="modal-footer">
                                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                    <button type="submit" name="updateadminblot" class="btn btn-success">Save</button>
+                                    <button type="submit" name="approveadminblot" class="btn btn-success">Approve</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+
+         
+                <div id="rejectBlottersModal" class="modal fade" data-backdrop="false">
+                    <div class="modal-dialog  modal-dialog-centered">
+                        <div class="modal-content">
+                            <form action="actioncode.php" method="POST" enctype="multipart/form-data">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Reject Blotter</h4>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                <input type="hidden" name="reject_id" id="reject_id">
+                                <input type="hidden" name="reject_uid" id="reject_uid">
+                                <input type="hidden" name="complainant_firstname" id="rejectcomplainant_firstname">
+                                <input type="hidden" name="complainant_middlename" id="rejectcomplainant_middlename">
+                                <input type="hidden" name="complainant_lastname" id="rejectcomplainant_lastname">
+                                <input type="hidden" name="complainantaddress" id="rejectcomplainantaddress">
+                                <input type="hidden" name="incident" id="rejectincident">
+                                <input type="hidden" name="complainee_firstname" id="rejectcomplainee_firstname">
+                                <input type="hidden" name="complainee_middlename" id="rejectcomplainee_middlename">
+                                <input type="hidden" name="complainee_lastname" id="rejectcomplainee_lastname">
+                                <input type="hidden" name="complaineeaddress" id="rejectcomplaineeaddress">
+                                <input type="hidden" name="incidentevidence" id="rejectincidentevidence">
+                                <input type="hidden" name="status" id="rejectdocumentstatus">
+                                <p>Are you sure you want to reject this blotter record?</p>
+                                <p class="text-warning"><small>This action cannot be undone!</small></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                    <button type="submit" name="rejectadminblot" class="btn btn-danger">Reject</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Delete Modal HTML -->
                 <div id="deleteBlotters" class="modal fade" data-backdrop="false">
                     <div class="modal-dialog  modal-dialog-centered">
@@ -192,7 +196,7 @@ include('includes/dashboard.php');
                                 <div class="modal-body">
                                     <input type="hidden" name="del_id" id="del_id">
                                     <input type="hidden" name="del_uid" id="del_uid">
-                                    <p>Are you sure you want to delete this record?</p>
+                                    <p>Are you sure you want to delete this blotter request record?</p>
                                     <p class="text-warning"><small>This action cannot be undone!</small></p>
                                 </div>
                                 <div class="modal-footer">
@@ -252,7 +256,7 @@ include('includes/dashboard.php');
         $('#del_id').val('<?=$key?>');
         $('#del_uid').val(data[12]);
     });
-    $('.editbtn').on('click', function(){
+    $('.approvebtn').on('click', function(){
         $tr = $(this).closest('tr');
         var data = $tr.children("td").map(function() {
             return $(this).text();
@@ -267,10 +271,32 @@ include('includes/dashboard.php');
         $('#complainee_firstname').val(data[6]);
         $('#complainee_middlename').val(data[7]);
         $('#complainee_lastname').val(data[8]);
-        $('#complaineeaddress').val(data[9]);
-        $('#blotter_evidence').val(data[10]);
-        $('#blotterstatus').val(data[11]);
+        $('#complainee_lastname').val(data[9]);
+        $('#complaineeaddress').val(data[10]);
+        $('#documentstatus').val(data[11]);
         $('#edit_uid').val(data[12]);
+        
+    });
+
+    $('.rejectbtn').on('click', function(){
+        $tr = $(this).closest('tr');
+        var data = $tr.children("td").map(function() {
+            return $(this).text();
+        }).get();
+        console.log(data);
+        $('#reject_id').val('<?=$key?>');
+        $('#rejectcomplainant_firstname').val(data[1]);
+        $('#rejectcomplainant_middlename').val(data[2]);
+        $('#rejectcomplainant_lastname').val(data[3]);
+        $('#rejectcomplainantaddress').val(data[4]);
+        $('#rejectincident').val(data[5]);
+        $('#rejectcomplainee_firstname').val(data[6]);
+        $('#rejectcomplainee_middlename').val(data[7]);
+        $('#rejectcomplainee_lastname').val(data[8]);
+        $('#rejectcomplainee_lastname').val(data[9]);
+        $('#rejectcomplaineeaddress').val(data[10]);
+        $('#rejectdocumentstatus').val(data[11]);
+        $('#reject_uid').val(data[12]);
         
     });
 });

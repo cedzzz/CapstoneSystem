@@ -96,9 +96,6 @@ window.location.href = 'logout.php';
                                     <a href="blotter.php?id=<?=$user->uid;?>" style="text-decoration:none;">E-Blotter</a>
                                 </li>
                                 <li>
-                                    <a href="history.php" style="text-decoration:none;">History</a>
-                                </li>
-                                <li>
                                     <a href="documents.php?id=<?=$user->uid;?>" style="text-decoration:none;">Documents</a>
                                 </li>
                             <?php endif; ?>
@@ -129,36 +126,6 @@ window.location.href = 'logout.php';
                                         <a class="nav-link" href="index.php">
                                             <i class="dripicons-home noti-icon link-secondary"></i>
                                         </a>
-                                    </li>
-
-                                    <li class="dropdown notification-list">
-                                        <a class="nav-link  arrow-none" data-bs-toggle="dropdown"
-                                            href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                            <i class="dripicons-bell noti-icon link-secondary"></i>
-                                            
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg">
-
-                                           
-                                            <div class="dropdown-item noti-title">
-                                                <h5 class="m-0">
-                                                    <span class="float-end">
-                                                        <a href="javascript: void(0);" class="text-dark">
-                                                            <small>Clear All</small>
-                                                        </a>
-                                                    </span>Notification
-                                                </h5>
-                                            </div>
-
-
-
-                                      
-                                            <a href="javascript:void(0);"
-                                                class="dropdown-item text-center text-primary notify-item notify-all">
-                                                View All
-                                            </a>
-
-                                        </div>
                                     </li>
 
 
@@ -193,12 +160,6 @@ window.location.href = 'logout.php';
                                             <a href="profile.php?id=<?=$user->uid;?>" class="dropdown-item notify-item">
                                                 <i class="mdi mdi-account-circle me-1"></i>
                                                 <span>Profile</span>
-                                            </a>
-
-                                       
-                                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                                <i class="mdi mdi-lifebuoy me-1"></i>
-                                                <span>Support</span>
                                             </a>
 
                                     

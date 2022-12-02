@@ -4,6 +4,7 @@ include('includes/dashboard.php');
 ?>
 <head>
     <link rel = "icon" type = "image/png" href = "logo.png">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -26,12 +27,14 @@ include('includes/dashboard.php');
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <h2>Manage <b>User Residents</b></h2>
+                                        <br>
+                                        <br>
                                         <a href="#addUserResidents" class="btn btn-success addbtn" data-toggle="modal"><i
                                                 class="material-icons">&#xE147;</i> <span>Add New User Resident</span></a>
                                         <a href="#deleteAll" class="btn btn-danger" data-toggle="modal"><i
                                                 class="material-icons">&#xE15C;</i> <span>Delete All User Residents</span></a>
                                                 <br>
-                            <br>
+                                                <br>
                                     </div>
                                     <div class="col-sm-6">
                                         
@@ -39,7 +42,7 @@ include('includes/dashboard.php');
                                 </div>
                             </div>
                             <table class="table table-striped table-hover">
-                            <thead>
+                                <thead>
                                     <tr>
                                         <th>Household Member</th>
                                         <th>First Name</th>
@@ -64,7 +67,7 @@ include('includes/dashboard.php');
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
+                                <?php
                                     include('dbcon.php');
                                     $uid = $_SESSION['verified_user_id'];
                                     $ref_table = "resident";
@@ -121,6 +124,7 @@ include('includes/dashboard.php');
                                                         }
                                                     ?>
 
+                <!-- Add Modal  -->
                 <div id="addUserResidents" class="modal fade" data-backdrop="false">
                     <div class="modal-dialog  modal-dialog-centered">
                         <div class="modal-content">
@@ -132,43 +136,44 @@ include('includes/dashboard.php');
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">First Name</label>
-                                        <input type="text" class="form-control" placeholder ="Enter resident's first name" name="first_name"  required>
+                                        <label style="text-align: left;">Household Member's First Name</label>
+                                        <input type="text" class="form-control" placeholder="Juan" title="Enter the first name of the household member" name="first_name"  required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Middle Name</label>
-                                        <input type="text" class="form-control" placeholder ="Enter resident's middle name" name="middle_name"  required>
+                                        <label style="text-align: left;">Household Member's  Middle Name</label>
+                                        <input type="text" class="form-control" name="middle_name" title="Enter the middle name of the household member" placeholder="Ruiz"  required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Last Name</label>
-                                        <input type="text" class="form-control" placeholder ="Enter resident's last name" name="last_name" required>
+                                        <label style="text-align: left;">Household Member's Last Name</label>
+                                        <input type="text" class="form-control" name="last_name" title="Enter the last name of the household member" placeholder="Dela Cruz" required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Gender</label>
-                                        <select class="form-control" name="gender" required="">
+                                        <label style="text-align: left;">Household Member's Gender</label>
+                                        <select class="form-control" name="gender" title="Select the gender of the household member from the list" required="">
 		                                     <option disabled selected value="">-- select a gender --</option>
 		                                     <option value="Male">Male</option>
 		                                     <option value="Female">Female</option>
 		                                    </select>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Birthdate</label>
-                                        <input type="date" class="form-control" name="birthdate" required>
+                                        <label style="text-align: left;">Household Member's Birthdate</label>
+                                        <input type="date" class="form-control" title="MM/DD/YYYY" name="birthdate" required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Religion</label>
-                                        <select class="form-control" name="religion"  required="">
+                                        <label style="text-align: left;">Household Member's Religion</label>
+                                        <select class="form-control" name="religion" title="Select the religion of the household member from the list"  required="">
 		                                     <option disabled selected value="">-- select a religion --</option>
-		                                     <option value="Catholic">Roman Catholic</option>
-		                                     <option value="Iglesia">Iglesia Ni Kristo</option>
-                                             <option value="Jehovah">Jehovah's Witnesses</option>
+		                                     <option value="Roman Catholic">Roman Catholic</option>
+		                                     <option value="Iglesia Ni Kristo">Iglesia Ni Kristo</option>
+                                             <option value="Jehovah's Witness">Jehovah's Witness</option>
                                              <option value="Islam">Islam</option>
                                              <option value="Aglipayan">Aglipayan</option>
 		                                    </select>
                                     </div>
+
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Marital Status</label>
-                                        <select class="form-control" name="marital_status"  required="">
+                                        <label style="text-align: left;">Household Member's Marital Status</label>
+                                        <select class="form-control" name="marital_status" title="Select the marital status of the household member from the list"  required="">
 		                                     <option disabled selected value="">-- select a marital status --</option>
 		                                     <option value="Single">Single</option>
 		                                     <option value="Married">Married</option>
@@ -177,20 +182,24 @@ include('includes/dashboard.php');
 		                                    </select>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Contact Number</label>
-                                        <input name="contactnum"  class="form-control"  placeholder ="Enter resident's contact number" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" pattern="[0-9]{10}" required="">
+                                        <label style="text-align: left;">Household Member's Contact Number</label>
+                                        <input name="contactnum"  class="form-control"  title="Enter the contact number of the household member" placeholder="09653219934" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" pattern="[0-9]{11}" required="">
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Nationality</label>
-                                        <input type="text" class="form-control"  placeholder ="Enter resident's nationality" name="nationality"  required>
+                                        <label style="text-align: left;">Household Member's Nationality</label>
+                                        <select class="form-control" name="nationality" title="Select the nationality of the household member from the list" required="">
+		                                     <option disabled selected value="">-- select a nationality --</option>
+		                                     <option value="Filipino">Filipino</option>
+		                                     <option value="Non-Filipino">Non-Filipino</option>
+		                                    </select>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">House Number And Street</label>
-                                        <input type="text" class="form-control" name="housenostreet" placeholder = "Enter resident's current residing house number and street"   required>
+                                        <label style="text-align: left;">Household Member's House Number And Street</label>
+                                        <input type="text" class="form-control" title="Enter the house number and street of the household member" placeholder="80 Conception Street" name="housenostreet"   required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Manager's User ID</label>
-                                        <input name="manageruid"  class="form-control" placeholder = "Enter the resident's manager user id"  type="text" required="">
+                                        <label style="text-align: left;">Manager/User's Unique ID</label>
+                                        <input type="text" class="form-control" title="Enter the unique ID of the manager of the household" placeholder="qAMn6tJReAADGSJKLAKzc2BAfB8GTF42" name="manageruid"   required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -206,45 +215,52 @@ include('includes/dashboard.php');
                 <div id="editUserResidentsModal" class="modal fade" data-backdrop="false">
                     <div class="modal-dialog  modal-dialog-centered">
                         <div class="modal-content">
-                            <form action="actioncode.php" method="POST" enctype="multipart/form-data">
+                            <form action="actioncode.php" method="POST">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Edit User Resident</h4>
+                                    <h4 class="modal-title">Edit User Residents</h4>
                                     <button type="button" class="close" data-dismiss="modal"
                                         aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
                                 <input type="hidden" name="edit_id" id="edit_id">
                                 <input type="hidden" name="edit_uid" id="edit_uid">
-                                <div class="form-group input-group">
-                                        <label style="text-align: left;">First Name</label>
-                                        <input type="text" class="form-control"  name="first_name" id="first_name" required>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Household Member's First Name</label>
+                                        <input type="text" class="form-control" placeholder="Juan" title="Enter the first name of the household member" name="first_name" id="first_name" required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Middle Name</label>
-                                        <input type="text" class="form-control"  name="middle_name" id="middle_name" required>
+                                        <label style="text-align: left;">Household Member's Middle Name</label>
+                                        <input type="text" class="form-control" name="middle_name" title="Enter the middle name of the household member" placeholder="Ruiz" id="middle_name" required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Last Name</label>
-                                        <input type="text" class="form-control"  name="last_name" id="last_name" required>
+                                        <label style="text-align: left;">Household Member's Last Name</label>
+                                        <input type="text" class="form-control" name="last_name" title="Enter the last name of the household member" placeholder="Dela Cruz" id="last_name" required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Gender</label>
-                                        <select class="form-control" name="gender" id="gender" required="">
+                                        <label style="text-align: left;">Household Member's Gender</label>
+                                        <select class="form-control" name="gender" id="gender" title="Select the gender of the household member from the list" required="">
 		                                     <option disabled selected value="">-- select a gender --</option>
 		                                     <option value="Male">Male</option>
 		                                     <option value="Female">Female</option>
 		                                    </select>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Birthdate</label>
-                                        <input type="date" class="form-control" name="birthdate" id="birthdate" required>
+                                        <label style="text-align: left;">Household Member's Birthdate</label>
+                                        <input type="date" class="form-control" name="birthdate" title="MM/DD/YYYY" id="birthdate" required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Religion</label>
-                                        <input type="text" class="form-control"  name="religion" id="religion" required>
+                                        <label style="text-align: left;">Household Member's Religion</label>
+                                        <select class="form-control" name="religion" id="religion"  required="">
+		                                     <option disabled selected value="">-- select a religion --</option>
+                                             <option value="Roman Catholic">Roman Catholic</option>
+		                                     <option value="Iglesia Ni Kristo">Iglesia Ni Kristo</option>
+                                             <option value="Jehovah's Witness">Jehovah's Witness</option>
+                                             <option value="Islam">Islam</option>
+                                             <option value="Aglipayan">Aglipayan</option>
+		                                    </select>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Marital Status</label>
+                                        <label style="text-align: left;">Household Member's Marital Status</label>
                                         <select class="form-control" name="marital_status" id="marital_status" required="">
 		                                     <option disabled selected value="">-- select a marital status --</option>
 		                                     <option value="Single">Single</option>
@@ -254,17 +270,23 @@ include('includes/dashboard.php');
 		                                    </select>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Contact Number</label>
-                                        <input name="contactnum" id="contactnum" class="form-control"  placeholder="" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" pattern="[0-9]{10}" required="">
+                                        <label style="text-align: left;">Household Member's Contact Number</label>
+                                        <input name="contactnum" id="contactnum" title="Enter the contact number of the household member" placeholder="09653219934" class="form-control" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" pattern="[0-9]{11}" required="">
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Nationality</label>
-                                        <input type="text" class="form-control" name="nationality" id="nationality"  required>
+                                        <label style="text-align: left;">Household Member's Nationality</label>
+                                        <select class="form-control" name="nationality" id="nationality" title="Select the nationality of the household member from the list" required="">
+		                                     <option disabled selected value="">-- select a nationality --</option>
+		                                     <option value="Filipino">Filipino</option>
+		                                     <option value="Non-Filipino">Non-Filipino</option>
+		                                    </select>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">House Number And Street</label>
-                                        <input type="text" class="form-control" name="housenostreet" id="housenostreet"  required>
+                                        <label style="text-align: left;">Household Member's House Number And Street</label>
+                                        <input type="text" class="form-control" placeholder="80 Conception Street" title="Enter the house number and street of the household member" name="housenostreet" id="housenostreet"  required>
                                     </div>
+                                   
+                                </div>
                                 <div class="modal-footer">
                                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                                     <button type="submit" name="updateadminres" class="btn btn-success">Save</button>
@@ -280,13 +302,13 @@ include('includes/dashboard.php');
                         <div class="modal-content">
                             <form action="actioncode.php" method="POST">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Delete Blotter</h4>
+                                    <h4 class="modal-title">Delete Resident</h4>
                                     <button type="button" class="close" data-dismiss="modal"
                                         aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
-                                    <input type="hidden" name="del_id" id="del_id">
-                                    <input type="hidden" name="del_uid" id="del_uid">
+                                <input type="hidden" name="del_id" id="del_id">
+                                <input type="hidden" name="del_uid" id="del_uid">
                                     <p>Are you sure you want to delete this record?</p>
                                     <p class="text-warning"><small>This action cannot be undone!</small></p>
                                 </div>
@@ -304,13 +326,13 @@ include('includes/dashboard.php');
                         <div class="modal-content">
                             <form action="actioncode.php" method="POST">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Delete All Residents</h4>
+                                    <h4 class="modal-title">Delete Resident</h4>
                                     <button type="button" class="close" data-dismiss="modal"
                                         aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" name="del_id" id="del_id">
-                                    <p>Are you sure you want to delete all residents from all users?</p>
+                                    <p>Are you sure you want to delete all records?</p>
                                     <p class="text-warning"><small>This action cannot be undone!</small></p>
                                 </div>
                                 <div class="modal-footer">

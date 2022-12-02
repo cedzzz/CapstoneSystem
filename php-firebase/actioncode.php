@@ -1,7 +1,9 @@
 <?php
 session_start();
 include('dbcon.php');
-
+require_once('vendor/setasign/fpdf/fpdf.php');
+require_once('vendor/setasign/fpdi/src/fpdi.php');
+use setasign\Fpdi\Fpdi;
 
 
 
@@ -220,7 +222,7 @@ if(isset($_POST['updateres'])){
         }
     
 
-        if(isset($_POST['updateadminblot'])){
+        if(isset($_POST['approveadminblot'])){
             $uid = $_SESSION['verified_user_id'];
             $edit_uid = $_POST['edit_uid'];
             $edit_id = $_POST['edit_id'];
@@ -235,52 +237,19 @@ if(isset($_POST['updateres'])){
             $complainee_lastname = $_POST['complainee_lastname'];
             $complaineeaddress = $_POST['complainee_address'];
             $incident = $_POST['incident'];
-            $incidentevidence = $_FILES['blotter_evidence']['name'];
-            $random_no = rand(1111, 9999);
-            $new_media = $random_no.$incidentevidence;
-
             $status = $_POST['status'];
         
             
         
-        if($incidentevidence!=NULL){
-            $filename = 'uploads/blotter/'.$new_media;
+        if($status == 'Pending'){
+            $status = 'Approved';
             $updateData = [
-                'complainant_firstname'=>$complainant_firstname,
-                'complainant_middlename'=>$complainant_middlename,
-                'complainant_lastname'=>$complainant_lastname,
-                'complainantaddress'=>$complainantaddress,
-                'complainee_firstname'=>$complainee_firstname,
-                'complainee_middlename'=>$complainee_middlename,
-                'complainee_lastname'=>$complainee_lastname,
-                'complaineeaddress'=>$complaineeaddress,
-                'incident'=>$incident,
-                'incidentevidence'=>$filename,
                 'status'=>$status,
             ];
-        }
-        else{
-            $updateData = [
-                'complainant_firstname'=>$complainant_firstname,
-                'complainant_middlename'=>$complainant_middlename,
-                'complainant_lastname'=>$complainant_lastname,
-                'complainantaddress'=>$complainantaddress,
-                'complainee_firstname'=>$complainee_firstname,
-                'complainee_middlename'=>$complainee_middlename,
-                'complainee_lastname'=>$complainee_lastname,
-                'complaineeaddress'=>$complaineeaddress,
-                'incident'=>$incident,
-                'status'=>$status,
-            ];
-        }
-        
             $updatequery = $database->getReference($ref_table)->getChild($edituid)->update($updateData);
             if($updatequery)
                 {
-                    if($incidentevidence!=NULL){
-                        move_uploaded_file($_FILES['blotter_evidence']['tmp_name'], "uploads/blotter/".$new_media);
-                    }
-                    $_SESSION['status'] = "Blotter details has been updated!";
+                    $_SESSION['status'] = "Blotter record's status has been approved!";
                     header("Location: adminblotter.php?id=".$uid);
                     exit(0);
                 }
@@ -290,14 +259,30 @@ if(isset($_POST['updateres'])){
                     header('Location: adminblotter.php?id='.$uid);
                     exit();
                 }
+        }
+        elseif($status=='Approved'){
+            $_SESSION['statusred'] = "This blotter record's status is already approved!";
+            header('Location: adminblotter.php?id='.$uid);
+            exit();
+        }
+        else{
+            $_SESSION['statusred'] = "Unable to approve user's blotter record, it has already been rejected!";
+            header('Location: adminblotter.php?id='.$uid);
+            exit();            
+        }
+        
             }
 
-            if(isset($_POST['updateadmindocu'])){
+
+           
+
+
+            if(isset($_POST['approveadmindocu'])){
                 $uid = $_SESSION['verified_user_id'];
                 $edit_uid = $_POST['edit_uid'];
                 $edit_id = $_POST['edit_id'];
-                $edituid = $edit_uid.'/'.$edit_id;
                 $ref_table = 'documents';
+                $edituid = $edit_uid.'/'.$edit_id;
                 $firstname = $_POST['first_name'];
                 $middlename = $_POST['middle_name'];
                 $lastname = $_POST['last_name'];
@@ -310,15 +295,51 @@ if(isset($_POST['updateres'])){
                 $document_type = $_POST['document_type'];
                 $permitcertificate_type = $_POST['permitcertificate_type'];
                 $status = $_POST['status'];
-                $documents = $_FILES['documents']['name'];
                 $random_no = rand(1111, 9999);
-                $new_media = $random_no.$documents;
-            
+                $housenostreet = $_POST['housenostreet'];
+                $barangay = 'Barangay Santol';
+                $city = 'Quezon City';
+                $address = $housenostreet.', '.$barangay.', '.$city;
+                $today = new DateTime('today');
+                $todaycompute = new DateTime('today');
+                $future = $todaycompute->add(new DateInterval("P12M"));
+                $futureexpire = $future->format('Y-m-d');
+                $todayresult = $today->format('Y-m-d');
+              
+
+
                 
-            
-            if($documents!=NULL && $permitcertificate_type != NULL){
-                $filename = 'uploads/documents/'.$new_media;
-            
+                
+            if($document_type =='Barangay Working Permit' && $status == 'Pending'){
+                $fullname = $firstname.' '.$middlename.' '.$lastname;
+                $message = urlencode("This is to certify that this document requested by ".$fullname." is valid and effective on ".$todayresult." and it will remain valid until ".$futureexpire.". This serves as the official barangay seal.");
+                $new_media = $random_no.$firstname.$lastname.$document_type;
+                $sourcefile = 'pdftemplate/SANTOLNOTEXTCLEARANCE.pdf';
+                $pdf = new FPDI();
+                $pdf->AddPage();
+                $pdf->setSourceFile($sourcefile); 
+                $templatepdf = $pdf->importPage(1); 
+                $pdf->useTemplate($templatepdf, null, null, null, null, true);    
+                $pdf->SetFont('Arial', '', '11');
+                $pdf->SetTextColor(0,0,0);  
+                $pdf->SetXY(105, -134);
+                $pdf->Write(0, $fullname);
+                $pdf->SetXY(105, -128);
+                $pdf->Write(0, $address);
+                $pdf->SetXY(105, -116);
+                $pdf->Write(0, $birthdate);
+                $pdf->SetXY(105, -109);
+                $pdf->Write(0, $city);
+                $pdf->SetXY(105, -97);
+                $pdf->Write(0, 'IDENTIFICATION PURPOSES');
+                $pdf->SetXY(105, -68);
+                $pdf->Write(0, 'ONLINE');
+                $pdf->SetXY(105, -62);
+                $pdf->Write(0, $todayresult);
+                $pdf->Image("https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=$message&choe=UTF-8", 175, 235, null, null, 'PNG');
+                $filename = 'uploads/documents/'.$new_media.'.pdf';            
+                $documents = $pdf->Output('F', $filename);
+                $status = 'Approved';
             
                 $updateData = [
                     'firstname'=>$firstname,
@@ -330,84 +351,43 @@ if(isset($_POST['updateres'])){
                     'religion'=>$religion,
                     'nationality'=>$nationality,
                     'maritalstatus'=>$maritalstatus,
+                    'housenostreet'=> $housenostreet,
+                    'barangay'=> $barangay,
+                    'city'=> $city,
                     'documenttype'=>$document_type,
                     'permitcertificatetype'=> $permitcertificate_type,
                     'documents'=>$filename,
                     'status'=>$status,
+                    'uid'=>$edit_uid,
                 ];
-            }
-            elseif($documents!=NULL && $permitcertificate_type == NULL){
-                    $filename = 'uploads/documents/'.$new_media;
-                    $permitcertificate_type = 'N/A';
-                
-                    $updateData = [
-                        'firstname'=>$firstname,
-                        'middlename'=>$middlename,
-                        'lastname'=>$lastname,
-                        'gender'=>$gender,
-                        'age'=>$age,
-                        'birthdate'=>$birthdate,
-                        'religion'=>$religion,
-                        'nationality'=>$nationality,
-                        'maritalstatus'=>$maritalstatus,
-                        'documenttype'=>$document_type,
-                        'permitcertificatetype'=> $permitcertificate_type,
-                        'documents'=>$filename,
-                        'status'=>$status,
-                    ];
-                
-            }
-            elseif($documents == NULL && $permitcertificate_type != NULL){
-                $updateData = [
-                    'firstname'=>$firstname,
-                    'middlename'=>$middlename,
-                    'lastname'=>$lastname,
-                    'gender'=>$gender,
-                    'age'=>$age,
-                    'birthdate'=>$birthdate,
-                    'religion'=>$religion,
-                    'nationality'=>$nationality,
-                    'maritalstatus'=>$maritalstatus,
-                    'documenttype'=>$document_type,
-                    'permitcertificatetype'=> $permitcertificate_type,
-                    'status'=>$status,
-                ];
-            }
-            else{
-                $permitcertificate_type = 'N/A';
-                $updateData = [
-                    'firstname'=>$firstname,
-                    'middlename'=>$middlename,
-                    'lastname'=>$lastname,
-                    'gender'=>$gender,
-                    'age'=>$age,
-                    'birthdate'=>$birthdate,
-                    'religion'=>$religion,
-                    'nationality'=>$nationality,
-                    'maritalstatus'=>$maritalstatus,
-                    'documenttype'=>$document_type,
-                    'permitcertificatetype'=> $permitcertificate_type,
-                    'status'=>$status,
-                ];
-            }
-            
-            
                 $updatequery = $database->getReference($ref_table)->getChild($edituid)->update($updateData);
+                              
                 if($updatequery)
                     {
-                        if($documents!=NULL){
-                            move_uploaded_file($_FILES['documents']['tmp_name'], "uploads/documents/".$new_media);
-                        }
-                        $_SESSION['status'] = "The user's document details have been updated!";
+                        $_SESSION['status'] = "The user's document request has been approved!";
                         header("Location: admindocuments.php?id=".$uid);
-                        exit(0);
+                        exit();
                     }
                     else
                     {
-                        $_SESSION['statusred'] = "The attempt to update the user's document details was unsuccessful.";
+                        $_SESSION['statusred'] = "The attempt to approve the user's document request was unsuccessful.";
                         header('Location: admindocuments.php?id='.$uid);
                         exit();
                     }
+            }
+            elseif($status == 'Approved'){
+                $_SESSION['statusred'] = "The user's document request has already been approved!";
+                header("Location: admindocuments.php?id=".$uid);
+                exit(0);
+            }
+            else{
+                $_SESSION['statusred'] = "Unable to approve user's document request, it has already been rejected.";
+                header("Location: admindocuments.php?id=".$uid);
+                exit(0);
+            }
+            
+            
+
                 }
 
                 if(isset($_POST['updateadminres'])){
@@ -459,6 +439,185 @@ if(isset($_POST['updateres'])){
                             exit();
                         }
                     }
+
+
+                    if(isset($_POST['rejectadminblot'])){
+                        $uid = $_SESSION['verified_user_id'];
+                        $reject_uid = $_POST['reject_uid'];
+                        $reject_id = $_POST['reject_id'];
+                        $ref_table = 'blotter';
+                        $rejectuid = $reject_uid.'/'.$reject_id;
+                        $complainant_firstname = $_POST['complainant_firstname'];
+                        $complainant_middlename = $_POST['complainant_middlename'];
+                        $complainant_lastname = $_POST['complainant_lastname'];
+                        $complainantaddress = $_POST['complainantaddress'];
+                        $complainee_firstname = $_POST['complainee_firstname'];
+                        $complainee_middlename = $_POST['complainee_middlename'];
+                        $complainee_lastname = $_POST['complainee_lastname'];
+                        $complaineeaddress = $_POST['complaineeaddress'];
+                        $incident = $_POST['incident'];
+                        $status = $_POST['status'];
+                    
+                        
+                    
+                    if($status == 'Pending'){
+                        $status = 'Rejected';
+                        $updateData = [
+                            'status'=>$status,
+                        ];
+                        $updatequery = $database->getReference($ref_table)->getChild($rejectuid)->update($updateData);
+                        if($updatequery)
+                            {
+                                $_SESSION['status'] = "Blotter record's status has been rejected!";
+                                header("Location: adminblotter.php?id=".$uid);
+                                exit(0);
+                            }
+                            else
+                            {
+                                $_SESSION['statusred'] = "The attempt to update the blotter's details is unsuccessful.";
+                                header('Location: adminblotter.php?id='.$uid);
+                                exit();
+                            }
+                    }
+                    elseif($status=='Rejected'){
+                        $_SESSION['statusred'] = "This blotter record's status is already approved!";
+                        header('Location: adminblotter.php?id='.$uid);
+                        exit();
+                    }
+                    else{
+                        $_SESSION['statusred'] = "Unable to approve user's blotter record, it has already been approved!" ;
+                        header('Location: adminblotter.php?id='.$uid);
+                        exit();            
+                    }
+                    
+                        }
+        
+
+
+        
+
+
+                        if(isset($_POST['rejectadmindocu'])){
+                            $uid = $_SESSION['verified_user_id'];
+                            $reject_id = $_POST['reject_id'];
+                            $reject_uid = $_POST['reject_uid'];
+                            $ref_table = 'documents';
+                            $rejectuid = $reject_uid.'/'.$reject_id;
+                            $firstname = $_POST['first_name'];
+                            $middlename = $_POST['middle_name'];
+                            $lastname = $_POST['last_name'];
+                            $gender = $_POST['gender'];
+                            $age = $_POST['age'];
+                            $birthdate = $_POST['birthdate'];
+                            $religion = $_POST['religion'];
+                            $maritalstatus = $_POST['marital_status'];
+                            $nationality = $_POST['nationality'];
+                            $document_type = $_POST['document_type'];
+                            $permitcertificate_type = $_POST['permitcertificate_type'];
+                            $status = $_POST['status'];
+                            $housenostreet = $_POST['housenostreet'];
+                            $barangay = 'Barangay Santol';
+                            $city = 'Quezon City';
+                        
+                            
+                        
+                        if($status == 'Pending'){
+                            $status = 'Rejected';
+                            $updateData = [
+                                'firstname'=>$firstname,
+                                'middlename'=>$middlename,
+                                'lastname'=>$lastname,
+                                'gender'=>$gender,
+                                'age'=>$age,
+                                'birthdate'=>$birthdate,
+                                'religion'=>$religion,
+                                'nationality'=>$nationality,
+                                'maritalstatus'=>$maritalstatus,
+                                'housenostreet'=> $housenostreet,
+                                'barangay'=> $barangay,
+                                'city'=> $city,
+                                'documenttype'=>$document_type,
+                                'permitcertificatetype'=> $permitcertificate_type,
+                                'documents'=>$filename,
+                                'status'=>$status,
+                                'uid'=>$reject_uid,
+                            ];
+                            $updatequery = $database->getReference($ref_table)->getChild($rejectuid)->update($updateData);
+                            if($updatequery)
+                                {
+                                    $_SESSION['status'] = "Document record's status has been rejected!";
+                                    header("Location: admindocuments.php?id=".$uid);
+                                    exit(0);
+                                }
+                                else
+                                {
+                                    $_SESSION['statusred'] = "The attempt to update the document's status is unsuccessful.";
+                                    header('Location: admindocuments.php?id='.$uid);
+                                    exit();
+                                }
+                        }
+                        elseif($status =='Rejected'){
+                            $_SESSION['statusred'] = "This blotter record's status is already rejected!";
+                            header('Location: admindocuments.php?id='.$uid);
+                            exit();
+                        }
+                        else{
+                            $_SESSION['statusred'] = "Unable to approve user's blotter record, it has already been approved!" ;
+                            header('Location: admindocuments.php?id='.$uid);
+                            exit();            
+                        }
+                        
+                            }
+    
+                        if(isset($_POST['updateadminres'])){
+                            $uid = $_SESSION['verified_user_id'];
+                            $edit_uid = $_POST['edit_uid'];
+                            $edit_id = $_POST['edit_id'];
+                            $ref_table = 'resident';
+                            $edituid = $edit_uid.'/'.$edit_id;
+                            $firstname = $_POST['first_name'];
+                            $middlename = $_POST['middle_name'];
+                            $lastname = $_POST['last_name'];
+                            $gender = $_POST['gender'];
+                            $birthdate = $_POST['birthdate'];
+                            $religion = $_POST['religion'];
+                            $maritalstatus = $_POST['marital_status'];
+                            $contactnum = $_POST['contactnum'];
+                            $nationality = $_POST['nationality'];
+                            $housenostreet = $_POST['housenostreet'];
+                            $dob = new DateTime($birthdate);
+                            $today = new DateTime('today');
+                            $age = $dob->diff($today)->y;
+                        
+                        
+                            $updateData = [
+                                'firstname'=>$firstname,
+                                'middlename'=>$middlename,
+                                'lastname'=>$lastname,
+                                'gender'=>$gender,
+                                'age'=>$age,
+                                'birthdate'=>$birthdate,
+                                'religion'=>$religion,
+                                'contactnum'=>$contactnum,
+                                'nationality'=>$nationality,
+                                'maritalstatus'=>$maritalstatus,
+                                'housenostreet'=>$housenostreet,
+                            ];
+        
+                            $updatequery = $database->getReference($ref_table)->getChild($edituid)->update($updateData);
+                            if($updatequery)
+                                {
+                                    $_SESSION['status'] = "The user's resident details has been updated!";
+                                    header("Location: adminresidents.php?id=".$uid);
+                                    exit(0);
+                                }
+                                else
+                                {
+                                    $_SESSION['statusred'] = "The attempt to update the user's resident details is unsuccessful.";
+                                    header('Location: adminresidents.php?id='.$uid);
+                                    exit();
+                                }
+                            }
 
     
 
@@ -972,6 +1131,8 @@ if(isset($_POST['addblot'])){
     }
 }
 
+
+
 if(isset($_POST['addusers']))
 {
     $uid = $_SESSION['verified_user_id'];
@@ -1004,13 +1165,14 @@ if(isset($_POST['addusers']))
     }
 }
 
+
+
 if(isset($_POST['reqdoc'])){
     $uid = $_SESSION['verified_user_id'];
     $firstname = $_POST['first_name'];
     $middlename = $_POST['middle_name'];
     $lastname = $_POST['last_name'];
     $gender = $_POST['gender'];
-    $age = $_POST['age'];
     $birthdate = $_POST['birthdate'];
     $religion = $_POST['religion'];
     $maritalstatus = $_POST['marital_status'];
@@ -1019,7 +1181,12 @@ if(isset($_POST['reqdoc'])){
     $permitcertificate_type = $_POST['permitcertificate_type'];
     $documents = '';
     $status = 'Pending';
-    
+    $dob = new DateTime($birthdate);
+    $today = new DateTime('today');
+    $age = $dob->diff($today)->y;
+    $housenostreet = $_POST['housenostreet'];
+    $barangay = 'Barangay Santol';
+    $city = 'Quezon City';
 
     if($permitcertificate_type != NULL){
 
@@ -1033,6 +1200,9 @@ if(isset($_POST['reqdoc'])){
         'religion'=>$religion,
         'nationality'=>$nationality,
         'maritalstatus'=>$maritalstatus,
+        'housenostreet'=> $housenostreet,
+        'barangay'=> $barangay,
+        'city'=> $city,
         'documenttype'=>$document_type,
         'permitcertificatetype'=> $permitcertificate_type,
         'documents'=>$documents,
@@ -1041,7 +1211,7 @@ if(isset($_POST['reqdoc'])){
     ];
 }
 else {
-    $permitcertificate_type = '';
+    $permitcertificate_type = 'N/A';
     $postData = [
         'firstname'=>$firstname,
         'middlename'=>$middlename,
@@ -1052,6 +1222,9 @@ else {
         'religion'=>$religion,
         'nationality'=>$nationality,
         'maritalstatus'=>$maritalstatus,
+        'barangay'=> $barangay,
+        'city'=> $city,
+        'housenostreet'=> $housenostreet,
         'documenttype'=>$document_type,
         'permitcertificatetype'=> $permitcertificate_type,
         'documents'=>$documents,

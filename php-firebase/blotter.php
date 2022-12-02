@@ -45,12 +45,12 @@ include('includes/dashboard.php');
                                         <th>Complainant's First Name</th>
                                         <th>Complainant's Middle Name</th>
                                         <th>Complainant's Last Name</th>
-                                        <th>Complainant's Address</th>
+                                        <th>Complainant's House Number And Street</th>
                                         <th>Complaint</th>
                                         <th>Complainee's First Name</th>
                                         <th>Complainee's Middle Name</th>
                                         <th>Complainee's Last Name</th>
-                                        <th>Complainee's Address</th>
+                                        <th>Complainee's House Number And Street</th>
                                         <th>Evidence of the Complaint</th>
                                         <th>Status</th>
                                         <th></th>
@@ -116,19 +116,19 @@ include('includes/dashboard.php');
                                 <div class="modal-body">
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Complainant's First Name</label>
-                                        <input type="text" class="form-control" name="complainant_firstname"  required>
+                                        <input type="text" class="form-control" placeholder="Juan" title="Enter the first name of the complainant" name="complainant_firstname"  required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Complainant's Middle Name</label>
-                                        <input type="text" class="form-control" name="complainant_middlename"  required>
+                                        <input type="text" class="form-control" placeholder="Ruiz"  title="Enter the middle name of the complainant" name="complainant_middlename"  required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Complainant's Last Name</label>
-                                        <input type="text" class="form-control" name="complainant_lastname" required>
+                                        <input type="text" class="form-control" placeholder="Dela Cruz"  title="Enter the last name of the complainant" name="complainant_lastname" required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Complainant's Address</label>
-                                        <input type="text" class="form-control" name="complainant_address" required>
+                                        <label style="text-align: left;">Complainant's House Number And Street</label>
+                                        <input type="text" class="form-control" placeholder="30 Conception Street"  title="Enter the residing house number and street of the complainant" name="complainant_address" required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Incident</label>
@@ -136,23 +136,23 @@ include('includes/dashboard.php');
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Complainee's First Name</label>
-                                        <input type="text" class="form-control" name="complainee_firstname"  required>
+                                        <input type="text" class="form-control" placeholder="Pedro" title="Enter the first name of the complainee" name="complainee_firstname"  required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Complainee's Middle Name</label>
-                                        <input type="text" class="form-control" name="complainee_middlename"  required>
+                                        <input type="text" class="form-control" placeholder="Bakal" title="Enter the middle name of the complainee" name="complainee_middlename"  required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Complainee's Last Name</label>
-                                        <input type="text" class="form-control" name="complainee_lastname" required>
+                                        <input type="text" class="form-control" placeholder="Penduko" title="Enter the last name of the complainee" name="complainee_lastname" required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Complainee's Address</label>
-                                        <input type="text" class="form-control" name="complainee_address" required>
+                                        <label style="text-align: left;">Complainee's House Number And Street</label>
+                                        <input type="text" class="form-control" placeholder="20 Santol Street" title="Enter the residing house number and street of the complainee" name="complainee_address" required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Photo/Video of the Incident</label>
-                                        <input type = "file" name = "blotter_evidence" class = "form-control" required>
+                                        <label style="text-align: left;">Photo of the Incident</label>
+                                        <input type = "file" name = "blotter_evidence" title="Please upload a photo of the incident as proof" class = "form-control" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -178,19 +178,19 @@ include('includes/dashboard.php');
                                 <input type="hidden" name="edit_id" id="edit_id">
                                 <div class="form-group input-group">
                                         <label style="text-align: left;">Complainant's First Name</label>
-                                        <input type="text" class="form-control" name="complainant_firstname" id="complainant_firstname"  required>
+                                        <input type="text" class="form-control" placeholder="Juan"  title="Enter the first name of the complainant" name="complainant_firstname" id="complainant_firstname"  required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Complainant's Middle Name</label>
-                                        <input type="text" class="form-control" name="complainant_middlename" id="complainant_middlename"  required>
+                                        <input type="text" class="form-control" placeholder="Ruiz"  title="Enter the middle name of the complainant" name="complainant_middlename" id="complainant_middlename"  required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Complainant's Last Name</label>
-                                        <input type="text" class="form-control" name="complainant_lastname" id="complainant_lastname" required>
+                                        <input type="text" class="form-control" placeholder="Juan"  title="Enter the last name of the complainant" name="complainant_lastname" id="complainant_lastname" required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Complainant's Address</label>
-                                        <input type="text" class="form-control" name="complainant_address" id="complainantaddress" required>
+                                        <label style="text-align: left;">Complainant's House Number And Street</label>
+                                        <input type="text" class="form-control" placeholder="30 Conception Street" title="Enter the residing house number and street of the complainant" name="complainant_address" id="complainantaddress" required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Incident</label>
@@ -198,23 +198,23 @@ include('includes/dashboard.php');
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Complainee's First Name</label>
-                                        <input type="text" class="form-control" name="complainee_firstname" id="complainee_firstname"  required>
+                                        <input type="text" class="form-control" placeholder="Pedro" title="Enter the first name of the complainee" name="complainee_firstname" id="complainee_firstname"  required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Complainee's Middle Name</label>
-                                        <input type="text" class="form-control" name="complainee_middlename" id="complainee_middlename"  required>
+                                        <input type="text" class="form-control" placeholder="Bakal" title="Enter the middle name of the complainee" name="complainee_middlename" id="complainee_middlename"  required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Complainee's Last Name</label>
-                                        <input type="text" class="form-control" name="complainee_lastname" id="complainee_lastname" required>
+                                        <input type="text" class="form-control" placeholder="Penduko" title="Enter the last name of the complainee" name="complainee_lastname" id="complainee_lastname" required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Complainee's Address</label>
-                                        <input type="text" class="form-control" name="complainee_address" id="complaineeaddress" required>
+                                        <label style="text-align: left;">Complainee's House Number And Street</label>
+                                        <input type="text" class="form-control" placeholder="20 Santol Street" title="Enter the residing house number and street of the complainee" name="complainee_address" id="complaineeaddress" required>
                                     </div>
                                     <div class="form-group input-group">
-                                        <label style="text-align: left;">Photo/Video of the Incident</label>
-                                        <input type = "file" name = "blotter_evidence" id = "blotter_evidence" class = "form-control" disabled>
+                                        <label style="text-align: left;">Photo of the Incident</label>
+                                        <input type = "file" name = "blotter_evidence" title="Please upload a photo of the incident as proof" id = "blotter_evidence" class = "form-control" disabled>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
