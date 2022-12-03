@@ -176,6 +176,7 @@ include('includes/dashboard.php');
                                 </div>
                                 <div class="modal-body">
                                 <input type="hidden" name="edit_id" id="edit_id">
+                                <input type="hidden" name="status" id="status">
                                 <div class="form-group input-group">
                                         <label style="text-align: left;">Complainant's First Name</label>
                                         <input type="text" class="form-control" placeholder="Juan"  title="Enter the first name of the complainant" name="complainant_firstname" id="complainant_firstname"  required>
@@ -312,6 +313,7 @@ include('includes/dashboard.php');
         $('#complainee_middlename').val(data[7]);
         $('#complainee_lastname').val(data[8]);
         $('#complaineeaddress').val(data[9]);
+        $('#status').val(data[11]);
     });
 });
 </script>

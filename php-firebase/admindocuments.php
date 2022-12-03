@@ -78,7 +78,7 @@ include('includes/dashboard.php');
                                     ?>
                                     <tr>
                                     <td><?=$x++;?></td>
-                                        <td><?=$row['firstname'];?></td>
+                                    <td><?=$row['firstname'];?></td>
                                         <td><?=$row['middlename'];?></td>
                                         <td><?=$row['lastname'];?></td>
                                         <td><?=$row['gender'];?></td>
@@ -93,9 +93,9 @@ include('includes/dashboard.php');
                                         <td><?=$row['documenttype'];?></td>
                                         <td><?=$row['permitcertificatetype'];?></td>
                                         <td style= "display: none;"><?=$row['documents'];?></td>
-                                        <td style= "display: none;"><a href="<?=$row['documents'];?>" download="<?=$row['firstname'].' '.$row['lastname'].$row['documenttype'];?>" class = "btn btn-success btn-sm">Download</a></td>
                                         <td><?=$row['status'];?></td>
                                         <td style= "display: none;"><?=$fetchkey?></td>
+                                        <td style= "display: none;"><?=$row['key'];?></td>
                                         <td>
                                             <a href="#approveDocumentsModal" class="edit approvebtn" data-toggle="modal"><i
                                                     class="material-icons" style= "color: #00FF00;" data-toggle="tooltip"
@@ -134,8 +134,9 @@ include('includes/dashboard.php');
                                         aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
-                                <input type="hidden" name="edit_id" id="edit_id">
-                                <input type="hidden" name="edit_uid" id="edit_uid">
+                                <input type="hidden" name="approve_id" id="approve_id">
+                                <input type="hidden" name="approve_uid" id="approve_uid">
+                                <input type="hidden" name="key" id="key">
                                 <input type="hidden" name="first_name" id="first_name">
                                 <input type="hidden" name="middle_name" id="middle_name">
                                 <input type="hidden" name="last_name" id="last_name">
@@ -175,21 +176,8 @@ include('includes/dashboard.php');
                                 <div class="modal-body">
                                 <input type="hidden" name="reject_id" id="reject_id">
                                 <input type="hidden" name="reject_uid" id="reject_uid">
-                                <input type="hidden" name="first_name" id="rejectfirst_name">
-                                <input type="hidden" name="middle_name" id="rejectmiddle_name">
-                                <input type="hidden" name="last_name" id="rejectlast_name">
-                                <input type="hidden" name="gender" id="rejectgender">
-                                <input type="hidden" name="age" id="rejectage">
-                                <input type="hidden" name="birthdate" id="rejectbirthdate">
-                                <input type="hidden" name="marital_status" id="rejectmarital_status">
-                                <input type="hidden" name="nationality" id="rejectnationality">
-                                <input type="hidden" name="housenostreet" id="rejecthousenostreet">
-                                <input type="hidden" name="barangay" id="rejectbarangay">
-                                <input type="hidden" name="city" id="rejectcity">
-                                <input type="hidden" name="document_type" id="rejectdocument_type">
-                                <input type="hidden" name="permitcertificate_type" id="rejectpermitcertificatetype">
-                                <input type="hidden" name="religion" id="rejectreligion">
                                 <input type="hidden" name="status" id="rejectdocumentstatus">
+                                <input type="hidden" name="key" id="rejectkey">
                                 <p>Are you sure you want to reject this document request?</p>
                                 <p class="text-warning"><small>This action cannot be undone!</small></p>    
                                 </div>
@@ -215,6 +203,7 @@ include('includes/dashboard.php');
                                 <div class="modal-body">
                                     <input type="hidden" name="del_id" id="del_id">
                                     <input type="hidden" name="del_uid" id="del_uid">
+                                    <input type="hidden" name="key" id="delkey">
                                     <p>Are you sure you want to delete this record?</p>
                                     <p class="text-warning"><small>This action cannot be undone!</small></p>
                                 </div>
@@ -273,7 +262,8 @@ include('includes/dashboard.php');
         }).get();
         console.log(data);
         $('#del_id').val('<?=$key?>');
-        $('#del_uid').val(data[18]);
+        $('#del_uid').val(data[17]);
+        $('#delkey').val(data[18]);
     });
 
     $('.approvebtn').on('click', function(){
@@ -282,8 +272,8 @@ include('includes/dashboard.php');
             return $(this).text();
         }).get();
         console.log(data);
-        $('#edit_id').val('<?=$key?>');
-        $('#edit_uid').val(data[18]);
+        $('#approve_id').val('<?=$key?>');
+        $('#approve_uid').val(data[17]);
         $('#first_name').val(data[1]);
         $('#middle_name').val(data[2]);
         $('#last_name').val(data[3]);
@@ -298,7 +288,9 @@ include('includes/dashboard.php');
         $('#city').val(data[12]);
         $('#document_type').val(data[13]);
         $('#permitcertificatetype').val(data[14]);
-        $('#documentstatus').val(data[17]);
+        $('#documents').val(data[15]);
+        $('#documentstatus').val(data[16]);
+        $('#key').val(data[18]);
         
     });
 
@@ -309,22 +301,9 @@ include('includes/dashboard.php');
         }).get();
         console.log(data);
         $('#reject_id').val('<?=$key?>');
-        $('#reject_uid').val(data[18]);
-        $('#rejectfirst_name').val(data[1]);
-        $('#rejectmiddle_name').val(data[2]);
-        $('#rejectlast_name').val(data[3]);
-        $('#rejectgender').val(data[4]);
-        $('#rejectage').val(data[5]);
-        $('#rejectbirthdate').val(data[6]);
-        $('#rejectreligion').val(data[7]);
-        $('#rejectmarital_status').val(data[8]);
-        $('#rejectnationality').val(data[9]);
-        $('#rejecthousenostreet').val(data[10]);
-        $('#rejectbarangay').val(data[11]);
-        $('#rejectcity').val(data[12]);
-        $('#rejectdocument_type').val(data[13]);
-        $('#rejectpermitcertificatetype').val(data[14]);
-        $('#rejectdocumentstatus').val(data[17]);
+        $('#rejectdocumentstatus').val(data[16]);
+        $('#reject_uid').val(data[17]);
+        $('#rejectkey').val(data[18]);
 
         
     });

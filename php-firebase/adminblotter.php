@@ -85,6 +85,7 @@ include('includes/dashboard.php');
                                         <td><img src="<?=$row['incidentevidence'];?>" class="img-fluid" alt="profile image"></td>
                                         <td><?=$row['status'];?></td>
                                         <td style= "display: none;"><?=$fetchkey?></td>
+                                        <td style= "display: none;"><?=$row['key'];?></td>
                                         <td>
                                             <a href="#approveBlottersModal" class="edit approvebtn" data-toggle="modal"><i
                                                     class="material-icons" style= "color: #00FF00;" data-toggle="tooltip"
@@ -122,18 +123,9 @@ include('includes/dashboard.php');
                                         aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
-                                <input type="hidden" name="edit_id" id="edit_id">
-                                <input type="hidden" name="edit_uid" id="edit_uid">
-                                <input type="hidden" name="complainant_firstname" id="complainant_firstname">
-                                <input type="hidden" name="complainant_middlename" id="complainant_middlename">
-                                <input type="hidden" name="complainant_lastname" id="complainant_lastname">
-                                <input type="hidden" name="complainantaddress" id="complainantaddress">
-                                <input type="hidden" name="incident" id="incident">
-                                <input type="hidden" name="complainee_firstname" id="complainee_firstname">
-                                <input type="hidden" name="complainee_middlename" id="complainee_middlename">
-                                <input type="hidden" name="complainee_lastname" id="complainee_lastname">
-                                <input type="hidden" name="complaineeaddress" id="complaineeaddress">
-                                <input type="hidden" name="incidentevidence" id="incidentevidence">
+                                <input type="hidden" name="approve_id" id="approve_id">
+                                <input type="hidden" name="approve_uid" id="approve_uid">
+                                <input type="hidden" name="key" id="key">
                                 <input type="hidden" name="status" id="documentstatus">
                                 <p>Are you sure you want to approve this blotter record?</p>
                                 <p class="text-warning"><small>This action cannot be undone!</small></p>
@@ -160,16 +152,7 @@ include('includes/dashboard.php');
                                 <div class="modal-body">
                                 <input type="hidden" name="reject_id" id="reject_id">
                                 <input type="hidden" name="reject_uid" id="reject_uid">
-                                <input type="hidden" name="complainant_firstname" id="rejectcomplainant_firstname">
-                                <input type="hidden" name="complainant_middlename" id="rejectcomplainant_middlename">
-                                <input type="hidden" name="complainant_lastname" id="rejectcomplainant_lastname">
-                                <input type="hidden" name="complainantaddress" id="rejectcomplainantaddress">
-                                <input type="hidden" name="incident" id="rejectincident">
-                                <input type="hidden" name="complainee_firstname" id="rejectcomplainee_firstname">
-                                <input type="hidden" name="complainee_middlename" id="rejectcomplainee_middlename">
-                                <input type="hidden" name="complainee_lastname" id="rejectcomplainee_lastname">
-                                <input type="hidden" name="complaineeaddress" id="rejectcomplaineeaddress">
-                                <input type="hidden" name="incidentevidence" id="rejectincidentevidence">
+                                <input type="hidden" name="key" id="rejectkey">
                                 <input type="hidden" name="status" id="rejectdocumentstatus">
                                 <p>Are you sure you want to reject this blotter record?</p>
                                 <p class="text-warning"><small>This action cannot be undone!</small></p>
@@ -196,6 +179,7 @@ include('includes/dashboard.php');
                                 <div class="modal-body">
                                     <input type="hidden" name="del_id" id="del_id">
                                     <input type="hidden" name="del_uid" id="del_uid">
+                                    <input type="hidden" name="key" id="delkey">
                                     <p>Are you sure you want to delete this blotter request record?</p>
                                     <p class="text-warning"><small>This action cannot be undone!</small></p>
                                 </div>
@@ -255,6 +239,7 @@ include('includes/dashboard.php');
         console.log(data);
         $('#del_id').val('<?=$key?>');
         $('#del_uid').val(data[12]);
+        $('#delkey').val(data[13]);
     });
     $('.approvebtn').on('click', function(){
         $tr = $(this).closest('tr');
@@ -262,7 +247,7 @@ include('includes/dashboard.php');
             return $(this).text();
         }).get();
         console.log(data);
-        $('#edit_id').val('<?=$key?>');
+        $('#approve_id').val('<?=$key?>');
         $('#complainant_firstname').val(data[1]);
         $('#complainant_middlename').val(data[2]);
         $('#complainant_lastname').val(data[3]);
@@ -274,7 +259,8 @@ include('includes/dashboard.php');
         $('#complainee_lastname').val(data[9]);
         $('#complaineeaddress').val(data[10]);
         $('#documentstatus').val(data[11]);
-        $('#edit_uid').val(data[12]);
+        $('#approve_uid').val(data[12]);
+        $('#key').val(data[13]);
         
     });
 
@@ -297,6 +283,7 @@ include('includes/dashboard.php');
         $('#rejectcomplaineeaddress').val(data[10]);
         $('#rejectdocumentstatus').val(data[11]);
         $('#reject_uid').val(data[12]);
+        $('#rejectkey').val(data[13]);
         
     });
 });

@@ -102,6 +102,7 @@ include('includes/dashboard.php');
                                         <td><?=$row['zipcode'];?></td>
                                         <td><?=$row['manager'];?></td>
                                         <td><?=$fetchkey?></td>
+                                        <td style= "display: none;"><?=$row['key'];?></td>
                                         <td>
                                             <a href="#editUserResidentsModal" class="edit editbtn" data-toggle="modal"><i
                                                     class="material-icons" style= "color: #FFDF00;" data-toggle="tooltip"
@@ -224,6 +225,7 @@ include('includes/dashboard.php');
                                 <div class="modal-body">
                                 <input type="hidden" name="edit_id" id="edit_id">
                                 <input type="hidden" name="edit_uid" id="edit_uid">
+                                <input type="hidden" name="key" id="key">
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Household Member's First Name</label>
                                         <input type="text" class="form-control" placeholder="Juan" title="Enter the first name of the household member" name="first_name" id="first_name" required>
@@ -309,6 +311,7 @@ include('includes/dashboard.php');
                                 <div class="modal-body">
                                 <input type="hidden" name="del_id" id="del_id">
                                 <input type="hidden" name="del_uid" id="del_uid">
+                                <input type="hidden" name="key" id="delkey">
                                     <p>Are you sure you want to delete this record?</p>
                                     <p class="text-warning"><small>This action cannot be undone!</small></p>
                                 </div>
@@ -367,7 +370,8 @@ include('includes/dashboard.php');
         }).get();
         console.log(data);
         $('#del_id').val('<?=$key?>');
-        $('#del_uid').val(data[16]);
+        $('#del_uid').val(data[17]);
+        $('#delkey').val(data[18]);
     });
     $('.editbtn').on('click', function(){
         $tr = $(this).closest('tr');
@@ -387,6 +391,7 @@ include('includes/dashboard.php');
         $('#nationality').val(data[10]);
         $('#housenostreet').val(data[11]);
         $('#edit_uid').val(data[17]);
+        $('#key').val(data[18]);
         
     });
 });
