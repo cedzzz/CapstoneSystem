@@ -46,7 +46,9 @@ include('includes/dashboard.php');
                                         <th>Complainant's Middle Name</th>
                                         <th>Complainant's Last Name</th>
                                         <th>Complainant's House Number And Street</th>
+                                        <th>Type of Blotter</th>
                                         <th>Complaint</th>
+                                        <th>Date of Occurence</th>
                                         <th>Complainee's First Name</th>
                                         <th>Complainee's Middle Name</th>
                                         <th>Complainee's Last Name</th>
@@ -75,7 +77,9 @@ include('includes/dashboard.php');
                                         <td><?=$row['complainant_middlename'];?></td>
                                         <td><?=$row['complainant_lastname'];?></td>
                                         <td><?=$row['complainantaddress'];?></td>
+                                        <td><?=$row['blottertype'];?></td>
                                         <td><?=$row['incident'];?></td>
+                                        <td><?=$row['incidentdate'];?></td>
                                         <td><?=$row['complainee_firstname'];?></td>
                                         <td><?=$row['complainee_middlename'];?></td>
                                         <td><?=$row['complainee_lastname'];?></td>
@@ -131,8 +135,22 @@ include('includes/dashboard.php');
                                         <input type="text" class="form-control" placeholder="30 Conception Street"  title="Enter the residing house number and street of the complainant" name="complainant_address" required>
                                     </div>
                                     <div class="form-group input-group">
+                                        <label style="text-align: left;">Type of Blotter</label>
+                                        <select class="form-control" name="blottertype" title="Select the blotter type from the list" required="">
+		                                     <option disabled selected value="">-- select a blotter type --</option>
+		                                     <option value="Robbery">Robbery</option>
+		                                     <option value="Resident Dispute">Resident Dispute</option>
+                                             <option value="Car Collision">Car Collision</option>
+		                                     <option value="Others">Others</option>
+		                                    </select>
+                                    </div>
+                                    <div class="form-group input-group">
                                         <label style="text-align: left;">Incident</label>
                                         <textarea name="incident" id="incident1" class="text" cols="30" rows ="10" required></textarea>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Incident Date/Date of Occurence</label>
+                                        <input type="date" class="form-control" title="MM/DD/YYYY" name="incidentdate" required>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Complainee's First Name</label>
@@ -194,8 +212,22 @@ include('includes/dashboard.php');
                                         <input type="text" class="form-control" placeholder="30 Conception Street" title="Enter the residing house number and street of the complainant" name="complainant_address" id="complainantaddress" required>
                                     </div>
                                     <div class="form-group input-group">
+                                        <label style="text-align: left;">Type of Blotter</label>
+                                        <select class="form-control" name="blottertype" title="Select the blotter type from the list" id="blottertype" disabled>
+		                                     <option disabled selected value="">-- select a blotter type --</option>
+		                                     <option value="Robbery">Robbery</option>
+		                                     <option value="Resident Dispute">Resident Dispute</option>
+                                             <option value="Car Collision">Car Collision</option>
+		                                     <option value="Others">Others</option>
+		                                    </select>
+                                    </div>
+                                    <div class="form-group input-group">
                                         <label style="text-align: left;">Incident</label>
                                         <textarea name="incident" id="incident" class="text" cols="30" rows ="5" readonly></textarea>
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label style="text-align: left;">Incident Date/Date of Occurence</label>
+                                        <input type="date" class="form-control" title="MM/DD/YYYY" name="incidentdate" id = "incidentdate" disabled>
                                     </div>
                                     <div class="form-group input-group">
                                         <label style="text-align: left;">Complainee's First Name</label>
@@ -308,12 +340,14 @@ include('includes/dashboard.php');
         $('#complainant_middlename').val(data[2]);
         $('#complainant_lastname').val(data[3]);
         $('#complainantaddress').val(data[4]);
-        $('#incident').val(data[5]);
-        $('#complainee_firstname').val(data[6]);
-        $('#complainee_middlename').val(data[7]);
-        $('#complainee_lastname').val(data[8]);
-        $('#complaineeaddress').val(data[9]);
-        $('#status').val(data[11]);
+        $('#blottertype').val(data[5]);
+        $('#incident').val(data[6]);
+        $('#incidentdate').val(data[7]);
+        $('#complainee_firstname').val(data[8]);
+        $('#complainee_middlename').val(data[9]);
+        $('#complainee_lastname').val(data[10]);
+        $('#complaineeaddress').val(data[11]);
+        $('#status').val(data[13]);
     });
 });
 </script>

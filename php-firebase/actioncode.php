@@ -250,6 +250,7 @@ if(isset($_POST['updateres'])){
             $complainee_middlename = $_POST['complainee_middlename'];
             $complainee_lastname = $_POST['complainee_lastname'];
             $complaineeaddress = $_POST['complainee_address'];
+            $blottertype = $_POST['blottertype'];
             $incident = $_POST['incident'];
             $status = $_POST['status'];
         
@@ -350,6 +351,7 @@ if(isset($_POST['updateres'])){
                     $pdf->SetXY(105, -62);
                     $pdf->Write(0, $todayresult);
                     $pdf->Image("https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl=$message&choe=UTF-8", 175, 235, null, null, 'PNG');
+                    $pdf->Image("pdftemplate/watermark.png", 65, 120, null, null, 'PNG');
                     $pdf->SetFont('Arial', '', '9');
                     $pdf->SetTextColor('255', '0', '0');
                     $pdf->SetXY(85, -44);
@@ -506,6 +508,7 @@ if(isset($_POST['updateres'])){
                         $complainee_middlename = $_POST['complainee_middlename'];
                         $complainee_lastname = $_POST['complainee_lastname'];
                         $complaineeaddress = $_POST['complaineeaddress'];
+                        $blottertype = $_POST['blottertype'];
                         $incident = $_POST['incident'];
                         $status = $_POST['status'];
                     
@@ -643,6 +646,79 @@ if(isset($_POST['updateres'])){
                             }
 
     
+                            if(isset($_POST['generateadminblot'])){
+                                $uid = $_SESSION['verified_user_id'];
+                                $generate_uid = $_POST['generate_uid'];
+                                $generate_id = $_POST['generate_id'];
+                                $key = $_POST['key'];
+                                $ref_table = 'blotter';
+                                $generateuid = $generate_uid.'/'.$key;
+                                $complainant_firstname = $_POST['complainant_firstname'];
+                                $complainant_middlename = $_POST['complainant_middlename'];
+                                $complainant_lastname = $_POST['complainant_lastname'];
+                                $complainantaddress = $_POST['complainantaddress'];
+                                $complainee_firstname = $_POST['complainee_firstname'];
+                                $complainee_middlename = $_POST['complainee_middlename'];
+                                $complainee_lastname = $_POST['complainee_lastname'];
+                                $complaineeaddress = $_POST['complaineeaddress'];
+                                $blottertype = $_POST['blottertype'];
+                                $incident = $_POST['incident'];
+                                $incidentdate = $_POST['incidentdate'];
+                                $incidentevidence= $_POST['incidentevidence'];
+                                $status = $_POST['status'];
+                                $complainant_fullname = $complainant_firstname.' '.$complainant_middlename.' '.$complainant_lastname;
+                                $complainee_fullname = $complainee_firstname.' '.$complainee_middlename.' '.$complainee_lastname;
+                                $pdf = new FPDF();
+                                $pdf->AddPage('P');
+                                $pdf->SetFont('Arial','B','18');
+                                $pdf->SetDisplayMode('real', 'default');
+                                $pdf->Image('pdftemplate/brgysantollogo.png', 10, 20, 33, 33, 'PNG');
+                                $pdf->SetXY(50,20);
+                                $pdf->Cell(100,10,'Republic of the Philippines',0,0,'C',0);
+                                $pdf->SetFontSize(15);
+                                $pdf->Cell(-100,25,'BARANGAY SANTOL QUEZON CITY',0,0,'C',0);
+                                $pdf->SetFont('Arial','','12');
+                                $pdf->Cell(100,40,'SANTOL BARANGAY HALL',0,0,'C',0);
+                                $pdf->SetFont('Arial','B','10');
+                                $pdf->Cell(-100,55,'60 Silencio, Lungsod Quezon, Kalakhang Maynila',0,0,'C',0);
+                                $pdf->Cell(100,70,'BLOTTER REPORT',0,0,'C',0);
+                                $pdf->SetXY(25,50);
+                                $pdf->SetFontSize(10);
+                                $pdf->Write(30, 'TO WHOM IT MAY CONCERN: ');
+                                $pdf->SetFont('Arial','','10');
+                                $pdf->SetXY(40,75);
+                                $pdf->MultiCell(100,5,"THIS IS TO CERTIFY that based on the E-Blotter Site of Barangay Santol, record of the event/s mentioned here under is taken from the complainant's blotter request in the barangay's online database: ",0,'L',false);
+                                $pdf->Line(25, 100, 170, 100);
+                                $pdf->SetXY(40,105);
+                                $pdf->MultiCell(100,5,"COMPLAINANT'S NAME: ".$complainant_fullname,0,'L',false);
+                                $pdf->SetXY(40,110);
+                                $pdf->MultiCell(100,5,"COMPLAINANT'S ADDRESS: ".$complainantaddress,0,'L',false);
+                                $pdf->SetXY(40,115);
+                                $pdf->MultiCell(100,5,"COMPLAINEE'S NAME: ".$complainee_fullname,0,'L',false);
+                                $pdf->SetXY(40,120);
+                                $pdf->MultiCell(100,5,"COMPLAINEE'S ADDRESS: ".$complaineeaddress,0,'L',false);
+                                $pdf->SetXY(40,125);
+                                $pdf->MultiCell(100,5,"NATURE/TYPE OF INCIDENT: ".$blottertype,0,'L',false);
+                                $pdf->SetXY(40,130);
+                                $pdf->MultiCell(100,5,"DATE OF OCCURRENCE: ".$incidentdate,0,'L',false);
+                                $pdf->SetXY(40,135);
+                                $pdf->MultiCell(100,5,"BLOTTER STATUS: ".$status,0,'L',false);
+                                $pdf->Line(25, 145, 170, 145);
+                                $pdf->SetFont('Arial','B','10');
+                                $pdf->SetXY(25,140);
+                                $pdf->Write(30,'THE INCIDENT AS WRITTEN BY THE COMPLAINANT:');
+                                $pdf->SetFont('Arial','','10');
+                                $pdf->SetXY(35,160);
+                                $pdf->MultiCell(100,5,$incident,0,'L',false);
+                                $pdf->Image("pdftemplate/watermark.png", 40, 65, null, null, 'PNG');
+                                $pdf->Image($incidentevidence, 35, 200, 120, 70);
+                                $filename = $complainant_firstname.'_'.$complainant_lastname.'_'.$blottertype.'_blotter_report.pdf';
+                                $pdf->Output('I', $filename);
+                                }
+
+
+
+
 
     if(isset($_POST['deleteallres'])){
         $uid = $_SESSION['verified_user_id'];
@@ -1140,11 +1216,13 @@ if(isset($_POST['addblot'])){
     $complainee_middlename = $_POST['complainee_middlename'];
     $complainee_lastname = $_POST['complainee_lastname'];
     $complaineeaddress = $_POST['complainee_address'];
+    $blottertype = $_POST['blottertype'];
     $incident = $_POST['incident'];
     $incidentevidence = $_FILES['blotter_evidence']['name'];
     $random_no = rand(1111, 9999);
     $new_media = $random_no.$incidentevidence;
     $filename = 'uploads/blotter/'.$new_media;
+    $incidentdate = $_POST['incidentdate'];
     $status = 'Pending';
 
     
@@ -1159,6 +1237,8 @@ if(isset($_POST['addblot'])){
         'complainee_middlename'=>$complainee_middlename,
         'complainee_lastname'=>$complainee_lastname,
         'complaineeaddress'=>$complaineeaddress,
+        'blottertype'=>$blottertype,
+        'incidentdate'=>$incidentdate,
         'incident'=>$incident,
         'incidentevidence'=>$filename,
         'status'=>$status,
@@ -1176,7 +1256,9 @@ if(isset($_POST['addblot'])){
         'complainee_middlename'=>$complainee_middlename,
         'complainee_lastname'=>$complainee_lastname,
         'complaineeaddress'=>$complaineeaddress,
+        'blottertype'=>$blottertype,
         'incident'=>$incident,
+        'incidentdate'=>$incidentdate,
         'incidentevidence'=>$filename,
         'status'=>$status,
         'key' => $postKey,
