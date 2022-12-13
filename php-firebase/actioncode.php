@@ -1,8 +1,8 @@
 <?php
 session_start();
 include('dbcon.php');
-require_once('vendor/setasign/fpdf/fpdf.php');
-require_once('vendor/setasign/fpdi/src/fpdi.php');
+require_once('../php-firebase/vendor/setasign/fpdf/fpdf.php');
+require_once('../php-firebase/vendor/setasign/fpdi/src/fpdi.php');
 use setasign\Fpdi\Fpdi;
 
 
